@@ -5,7 +5,10 @@ module.exports = {
   getHome: async(req, res) => {
     try {
       const brands = await brandModel.aggregate([{ $sample: { size: 3 } }]).exec();
-      res.render("user/home",{brands});
+      const categories = await categoryModel.find({}).lean()
+      const popularProducts = await productModel.aggregate([{ $sample: { size: 10 } }]).exec();
+      const bestSellerProducts = await productModel.aggregate([{ $sample: { size: 6 } }]).exec();
+      res.render("user/home",{brands,categories,popularProducts,bestSellerProducts});
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -59,6 +62,18 @@ module.exports = {
       const popularProducts = await productModel.aggregate([{ $sample: { size: 4 } }]).exec();
       const products = await productModel.find({category:category.category}).lean();
       console.log(products)
+      res.render("user/shop", { products,popularProducts,categories});
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  getBrandProducts:async(req,res)=>{
+    const brandId = req.params.id
+        try {
+          const brand = await brandModel.findById(brandId)
+      const categories = await categoryModel.find().lean()
+      const popularProducts = await productModel.aggregate([{ $sample: { size: 4 } }]).exec();
+      const products = await productModel.find({brand:brand.brand}).lean();
       res.render("user/shop", { products,popularProducts,categories});
     } catch (err) {
       res.render("error", { message: err });

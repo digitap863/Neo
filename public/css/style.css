@@ -2177,13 +2177,32 @@ html .ui-button.ui-state-disabled:active {
     align-items: center
 }
 
-.page-item:first-child .page-link {
+.page-item:first-child .page-link {	
 	border-radius: 50%;
 	display: flex;
     justify-content: center;
     align-items: center
 }
 
+.category-home-swiper{
+	width: 60%;
+	object-fit: contain;
+}
+
+.best-seller-product-image{
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	height: 17rem
+}
+.best-seller-product-image img{
+	width: 70%;
+}
+@media(max-width:992px){
+	.best-seller-product-image{
+		height: auto;
+	}
+}
 
 /* 10. shop details page
 -------------------------------------------------------------- */

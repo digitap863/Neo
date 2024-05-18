@@ -73,7 +73,7 @@
                           class="single-product d-flex align-items-center mb-20"
                         >
                           <li class="mr-1">
-                            <a class="d-block" href="product-details.html">
+                            <a class="d-block" href="/product/{{this._id}}">
                               {{#each this.images}}
                                 {{#if @first}}
                                   <img
@@ -106,7 +106,7 @@
                               </li>
                             </ul>
                             <h6><a
-                                href="product-details.html"
+                                href="/product/{{this._id}}"
                               >{{this.name}}</a></h6>
                             <ul
                               class="single-product-price d-flex transition-3 pt-6"
@@ -153,13 +153,16 @@
                         >
                           <a
                             class="position-relative d-block"
-                            href="product-details.html"
+                            href="/product/{{this._id}}"
                           >
-                            <img
-                              class="width100 height100"
-                              src="/uploads/{{this.images}}"
-                              alt="product"
-                            />
+                           {{#each this.images}}
+                                {{#if @first}}
+                                  <img
+                                    src="/uploads/{{this}}"
+                                    alt=""
+                                  />
+                                {{/if}}
+                              {{/each}}
                           </a>
                           <ul
                             class="product-action d-flex position-absolute transition-3"
@@ -196,7 +199,7 @@
                               title="Add to Compare"
                             >
                               <a
-                                href="product-details.html"
+                                href="/product/{{this._id}}"
                                 class="text-center mb-10 white-bg primary-color d-block"
                               >
                                 <span><i class="far fa-repeat"></i></span>
@@ -222,7 +225,7 @@
                           class="single-product-info position-relative mt-25"
                         >
                           <h6><a
-                              href="product-details.html"
+                              href="/product/{{this._id}}"
                             >{{this.name}}</a></h6>
                           <ul class="single-product-price d-flex transition-3">
                             <li>

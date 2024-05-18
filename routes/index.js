@@ -1,5 +1,5 @@
 var express = require('express');
-const { getHome, getAbout, getContact, getShop, getBlog, getCategories, getCategoryProducts } = require('../controllers/userController');
+const { getHome, getAbout, getContact, getShop, getBlog, getCategories, getCategoryProducts, getBrandProducts } = require('../controllers/userController');
 var router = express.Router();
 
 /* GET home page. */
@@ -9,6 +9,7 @@ router.get('/shop',getShop)
 router.get('/blogs',getBlog)
 router.get('/categories',getCategories)
 router.get('/category/:id',getCategoryProducts)
+router.get('/brand/:id',getBrandProducts)
 router.get('/contact',getContact)
 
 module.exports = router;
