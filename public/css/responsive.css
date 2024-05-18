@@ -826,6 +826,7 @@
 	}
 	.banner.mb-30.transition-3.position-relative.over-hidden img {
 		min-height: 170px;
+		object-fit: contain;
 	}
 	.banner-content h4 {
 		font-size: 15px;
