@@ -1,7 +1,11 @@
+const brandModel = require("../models/brandModel");
+const categoryModel = require("../models/categoryModel");
+const productModel = require("../models/productModel");
 module.exports = {
-  getHome: (req, res) => {
+  getHome: async(req, res) => {
     try {
-      res.render("user/home");
+      const brands = await brandModel.aggregate([{ $sample: { size: 3 } }]).exec();
+      res.render("user/home",{brands});
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -13,9 +17,14 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
-  getShop: (req, res) => {
+  getShop: async (req, res) => {
     try {
-      res.render("user/shop");
+      const categories = await categoryModel.find({}).lean()
+             const popularProducts = await productModel
+        .aggregate([{ $sample: { size: 4 } }])
+        .exec();
+      const products = await productModel.find({}).lean();
+      res.render("user/shop", { products,popularProducts,categories});
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -34,9 +43,23 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
-  getCategories:(req,res)=>{
+  getCategories: async(req, res) => {
     try {
-      res.render("user/categories");
+      const categories = await categoryModel.find({}).lean()
+      res.render("user/categories",{categories});
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  getCategoryProducts:async(req,res)=>{
+    const categoryId = req.params.id
+        try {
+          const category = await categoryModel.findById(categoryId)
+      const categories = await categoryModel.find().lean()
+      const popularProducts = await productModel.aggregate([{ $sample: { size: 4 } }]).exec();
+      const products = await productModel.find({category:category.category}).lean();
+      console.log(products)
+      res.render("user/shop", { products,popularProducts,categories});
     } catch (err) {
       res.render("error", { message: err });
     }

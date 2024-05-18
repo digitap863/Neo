@@ -39,7 +39,7 @@
                                     <img src="images/slider/home2-slider-img1.png" alt="">
                                     </div>
                             </div><!-- /col -->
-                            </div><!-- /row -->
+                                </div><!-- /row -->
                         </div><!-- /container -->
                     </div><!-- /single-slider -->
                 </div><!-- /slider-active -->
@@ -50,19 +50,22 @@
             <div class="banner-area mt-80 mb-50 hm2">
                  <div class="container">
                     <div class="row">
+                        {{#each brands}}
                         <div class="col-xl-4 col-lg-4  col-md-6  col-sm-12 col-12 ">
-                            <div class="banner mb-30 transition-3 position-relative over-hidden">
-                                <a href="shop.html" class="d-block">
-                                    <img class="img-zoom transition-3 width100 height100" src="images/banner/home2/h2-banner1.jpg" alt="">
+                            <div class="banner mb-30 transition-3 position-relative over-hidden w-full ">
+                                <a href="/brand/{{this._id}}" class="home-brands">
+                                    <img class="img-zoom transition-3 h-[40%]" src="/uploads/{{this.image}}" alt="">
+                                    {{!-- <a href="shop.html" class=" px-3 pt-6 pb-6 mt-25">shop now <span class="pl-1"><i class="fas fa-long-arrow-alt-right"></i></span></a> --}}
+                                    <a href="/brand/{{this/_id}}" class="text text-black text-center" style="text-decoration: none; color: black;">shop now <span class="pl-1"><i class="fas fa-long-arrow-alt-right"></i></span></a>
                                 </a>
-                                <div class="banner-content position-absolute transfY50 w-100 pl-35">
+                                {{!-- <div class="banner-content position-absolute transfY50 w-100 pl-35 !bg-transparent">
                                     <span class="text-white d-block mb-10">20% Most Save Product</span>
-                                    <h4 class="text-white"><a href="product-details.html">Soda Organic <br> Juice Bottle</a> </h4>
-                                    <a href="shop.html" class="web-btn  d-inline-block text-uppercase white-bg primary-color  position-relative over-hidden px-3 pt-6 pb-6 mt-25">shop now <span class="pl-1"><i class="fas fa-long-arrow-alt-right"></i></span></a>
-                                </div>
+                                    <h4 class="text-white"><a href="product-details.html">{{this.category}}</a> </h4>
+                                </div> --}}
                             </div>
                         </div><!-- /col -->
-                        <div class="col-xl-4 col-lg-4  col-md-6  col-sm-12 col-12 ">
+                        {{/each}}
+                        {{!-- <div class="col-xl-4 col-lg-4  col-md-6  col-sm-12 col-12 ">
                             <div class="banner mb-30 transition-3 position-relative over-hidden">
                                 <a href="shop.html" class="d-block">
                                     <img class="img-zoom transition-3 width100 height100" src="images/banner/home2/h2-banner2.jpg" alt="">
@@ -76,8 +79,8 @@
                                     <a href="shop.html" class="web-btn  d-inline-block text-uppercase white-bg primary-color  position-relative over-hidden px-3 pt-6 pb-6 mt-25">shop now <span class="pl-1"><i class="fas fa-long-arrow-alt-right"></i></span></a>
                                 </div>
                             </div>
-                        </div><!-- /col -->
-                        <div class="col-xl-4 col-lg-4  col-md-6  col-sm-12 col-12 ">
+                        </div><!-- /col --> --}}
+                        {{!-- <div class="col-xl-4 col-lg-4  col-md-6  col-sm-12 col-12 ">
                             <div class="banner mb-30 transition-3 position-relative over-hidden">
                                 <a href="shop.html" class="d-block">
                                     <img class="img-zoom transition-3 width100 height100" src="images/banner/home2/h2-banner3.jpg" alt="">
@@ -88,7 +91,7 @@
                                     <a href="shop.html" class="web-btn  d-inline-block text-uppercase white-bg primary-color  position-relative over-hidden px-3 pt-6 pb-6 mt-25">shop now <span class="pl-1"><i class="fas fa-long-arrow-alt-right"></i></span></a>
                                 </div>
                             </div>
-                        </div><!-- /col -->
+                        </div><!-- /col --> --}}
                     </div><!-- /row -->
                  </div><!-- /container -->
             </div>

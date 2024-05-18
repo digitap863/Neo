@@ -1,4 +1,6 @@
 let multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -8,6 +10,19 @@ var storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
-
 var upload = multer({ storage: storage });
-module.exports = upload;
+
+function deleteImage(imageName) {
+  const imagePath = path.join(__dirname,"..", "public", "uploads", imageName);
+
+  // Delete the image file
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error("Error deleting image:", err);
+      return;
+    }
+    console.log("Image deleted successfully");
+  });
+}
+
+module.exports = {deleteImage,upload};

@@ -2160,6 +2160,11 @@ html .ui-button.ui-state-disabled:active {
 .pagination-page .page-link:focus {
 	box-shadow: none;
 }
+.home-brands{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 
 .pagination-area .shop-h-title h6 {
 	font-weight: 500;
@@ -2167,10 +2172,16 @@ html .ui-button.ui-state-disabled:active {
 
 .page-item:last-child .page-link {
 	border-radius: 50%;
+	display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 .page-item:first-child .page-link {
 	border-radius: 50%;
+	display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 
