@@ -1,3 +1,4 @@
+const blogs = require("../constants");
 const brandModel = require("../models/brandModel");
 const categoryModel = require("../models/categoryModel");
 const productModel = require("../models/productModel");
@@ -8,7 +9,7 @@ module.exports = {
       const categories = await categoryModel.find({}).lean()
       const popularProducts = await productModel.aggregate([{ $sample: { size: 10 } }]).exec();
       const bestSellerProducts = await productModel.aggregate([{ $sample: { size: 6 } }]).exec();
-      res.render("user/home",{brands,categories,popularProducts,bestSellerProducts});
+      res.render("user/home",{brands,categories,popularProducts,bestSellerProducts,blogs});
     } catch (err) {
       res.render("error", { message: err });
     }

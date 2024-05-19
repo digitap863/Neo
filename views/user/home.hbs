@@ -542,12 +542,13 @@
         </div><!-- /col -->
       </div><!-- /row -->
       <div class="row news-post-active mt-50">
+       {{#each blogs}}
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
           <div class="single-blog mb-30 wow slideInUp">
             <div class="blog-img over-hidden transition-3">
               <a href="blog-details.html"><img
                   class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog1.jpg"
+                  src="/neo/{{this.img}}"
                   alt=""
                 /></a>
             </div>
@@ -570,10 +571,8 @@
                   </a>
                 </li>
               </ul>
-              <h5><a class="pb-2 d-block" href="blog-details.html">Smashing
-                  Podcast Episode 11 With Eduardo Bouças Is Sourcebit</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
+              <h5><a class="pb-2 d-block" href="blog-details.html">{{this.heading}}</a></h5>
+              <p class="pb-1">{{this.content}}</p>
               <ul class="blogger d-flex align-items-center">
                 <li>
                   <img class="mr-2" src="/neo/blog-author.png" alt="" />
@@ -588,236 +587,7 @@
             </div>
           </div>
         </div><!-- /col -->
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="blog-details.html"><img
-                  class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog2.jpg"
-                  alt=""
-                /></a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-10 d-block" href="blog-details.html">Avoid
-                  Keyboard Event-Related Bugs Browser-Based Transliteration</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
-              <ul class="blogger d-flex align-items-center mt-10">
-                <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    David Warner</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="blog-details.html"><img
-                  class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog3.jpg"
-                  alt=""
-                /></a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-10 d-block" href="blog-details.html">Design
-                  Decisions With Neville Brody Design Cannot Remain Neutral</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
-              <ul class="blogger d-flex align-items-center mt-10">
-                <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    David Warner</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="#"><img
-                  class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog1.jpg"
-                  alt=""
-                /></a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-10 d-block" href="#">Smashing Podcast Episode 11
-                  With Eduardo Bouças Is Sourcebit</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
-              <ul class="blogger d-flex align-items-center mt-10">
-                <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    David Warner</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="#"><img
-                  class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog2.jpg"
-                  alt=""
-                /></a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-10 d-block" href="#">Avoid Keyboard Event-Related
-                  Bugs Browser-Based Transliteration</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
-              <ul class="blogger d-flex align-items-center mt-10">
-                <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    David Warner</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="#"><img
-                  class="img-zoom width100 height100"
-                  src="images/blog/home2/h2-blog3.jpg"
-                  alt=""
-                /></a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-10 d-block" href="#">Design Decisions With
-                  Neville Brody Design Cannot Remain Neutral</a></h5>
-              <p class="pb-1">Sed perspiciatis unde omnis iste natus error
-                voluptatem accusantium doloremque</p>
-              <ul class="blogger d-flex align-items-center mt-10">
-                <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    David Warner</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
+       {{/each}}
       </div><!-- /row -->
     </div><!-- /container -->
   </div>
