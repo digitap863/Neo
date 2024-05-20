@@ -33,6 +33,10 @@
 	.banner-content-s-4{
 		padding-left: 25px;
 	}
+	.footer-widget.f-link{
+		margin-left: 8rem;
+	}
+	
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1400px) {
@@ -216,6 +220,7 @@
 	.footer-widget.f-adress {
 		padding-right: 0;
 	}
+
 	.footer-widget.f-link {
 		margin-left: 0;
 	}
@@ -720,6 +725,11 @@
 	.footer-widget.f-adress {
 		padding-right: 0;
 	}
+
+	.footer-widget.f-adress img{
+		width: 75%;
+	}
+
 	.footer-widget.f-link {
 		margin-left: 0;
 	}
@@ -1131,6 +1141,10 @@
 	}
 	.video-player-btn {
 		top: 30%;
+		
+	}
+	.quick-links{
+		margin-top:3rem;
 	}
 	.about-left {
 		padding-right: 0;
@@ -1256,6 +1270,9 @@
 	.product-title-s{
 		margin-top: 25px;
 	}
+	.quick-links{
+		margin-top:3rem;
+	}
 }
 
 /* SM Small Device :550px. */
@@ -1331,6 +1348,9 @@
 	}
 	.client-avatar {
 		padding-right: 25px;
+	}
+	.quick-links{
+		margin-top:3rem;
 	}
 	.product-view-tab-area2 .review-tabs .nav-link {
 		padding-right: 0;

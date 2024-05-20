@@ -1734,11 +1734,21 @@ input:focus-visible {
 .product-items-active li a {
 	display: inline-block;
 }
+.product-items-active li a img {
+background: rgb(128 128 128 / 21%);
+border-radius: 10%;
+}
 
 .s-ser-content h5{
 	font-size: 20px;
 	margin-bottom: 15px;
 }
+
+.single-product-img{
+	background: rgb(128 128 128 / 21%);
+	border-radius: 10%;
+}
+
 
 
 /* home2 */
@@ -2767,6 +2777,9 @@ html .ui-button.ui-state-disabled:active {
 
 .contact-address .contact-icon {
 	font-size: 35px;
+	display: flex !important;
+    justify-content: center;
+    align-items: center;
 	width: 70px;
 	height: 70px;
 	line-height: 70px;
@@ -3102,7 +3115,9 @@ html .ui-button.ui-state-disabled:active {
 .video-player-btn:hover {
 	color: #ff3030;
 }
-
+.slider-content-neo-image{
+	width: 80%;
+}
 
 /* circle-animation start */
 
