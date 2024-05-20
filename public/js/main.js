@@ -59,7 +59,9 @@ wind.on('scroll', function () {
     var scroll = $(wind).scrollTop();
     if (scroll < 50) {
         sticky.removeClass("sticky-menu");
+        $("#header-sticky").addClass("floating-menu");
     } else {
+        sticky.removeClass("floating-menu");
         $("#header-sticky").addClass("sticky-menu");
     }
 });
