@@ -1173,9 +1173,9 @@ input:focus-visible {
 
 /* heme2 slider */
 
-.slider2-height {
+/* .slider2-height {
 	min-height: 720px;
-}
+} */
 
 .slider2-height .slider-content>span,
 .slider4-height .slider-content>span {
