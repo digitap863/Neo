@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var hbs = require("express-handlebars");
 var session = require("express-session");
+const FileStore = require('session-file-store')(session);
 const connectDB = require("./config/db");
 var indexRouter = require("./routes/index");
 var adminRouter = require("./routes/admin");
@@ -42,12 +43,21 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
+    store: new FileStore({ path: './sessions' }),
     secret: "key",
-    cookie: { maxAge: 1000 * 60 * 60 },
+    cookie: { maxAge: 10000 * 60 * 60 },
     saveUninitialized: true,
     resave: false,
   })
 );
+
+// Middleware to initialize cart in session
+app.use((req, res, next) => {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+  next();
+});
 
 app.use((req, res, next) => {
   res.set(
