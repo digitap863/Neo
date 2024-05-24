@@ -242,6 +242,7 @@ module.exports = {
     try{
       const {title,content} = req.body
       const images = req.files.map((elem) => elem.filename);
+      console.log(images)
       const blogData = {
         title,
         content,
@@ -285,9 +286,9 @@ module.exports = {
     }
   },
   deleteBlog: async (req, res) => {
-    const brandId = req.params.id;
+    const blogId= req.params.id;
     try {
-      brandModel.findByIdAndDelete(brandId).then((response) => {
+      blogModel.findByIdAndDelete(blogId).then((response) => {
         if (response.image) {  
           deleteImage(response.image);
         }

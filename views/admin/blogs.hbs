@@ -9,20 +9,21 @@
                                     <table id="brandTable" class="table table-striped m-b-0">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Address</th>
-                                                <th>Phone</th>
-                                                <th>Map Link</th>
-                                                <th>Delete</th>
+                                                <th>Title</th>
+                                                <th>Content</th>
+                                                <th>Images</th>
                                             </tr>
                                         </thead>
                                                 <tbody>
                                            {{#each blogs}}
                                             <tr>
-                                                <td>{{this.title}}</td>
-                                                <td>{{this.content}}</td>
-                                                <td><a href="tel:{{this.phone}}" target="_blank" rel="noreferrer">{{this.phone}}</a></td>
-                                                <td><a href="{{this.link}}" target="_blank" rel="noreferrer">{{this.link}}</a></td>
+                                                <td class="text-sm">{{this.title}}</td>
+                                                <td class="text-[0.6rem]">{{this.content}}</td>
+                                                <td>{{#each this.images}}
+        {{#if @first}}
+            <img class="w-20" src="/uploads/{{this}}" alt="">
+        {{/if}}
+    {{/each}}</td>
                                                 
                                                 <td><button  onclick="sure('{{this._id}}')" class="bg-red-500 rounded-lg text-white font-semibold p-2 hover:bg-red-300">Delete</button></td>
                                             </tr>
@@ -35,7 +36,7 @@
                 
             </div>
             <div class="w-[50%] h-full pt-20 p-5">
-                <form action="/admin/add-branch" method="post"
+                <form action="/admin/add-blog" method="post"  enctype="multipart/form-data"
                     class="border border-1 rounded-xl p-4 flex flex-col items-center gap-5 bg-gray-500/30">
                     <h3 class="text-2xl font-bold">Add New Blog</h3>
                     <input name="title" type="text" class="w-[80%] h-10 border border-1 text-lg px-3 rounded-xl"  placeholder="Blog Title" required>
@@ -50,7 +51,7 @@
 </div>
 </div>
  <script>
-      function sure(branchId) {
+      function sure(blogId) {
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
@@ -67,7 +68,7 @@
               'success'
             ) 
              $.ajax({
-          url:'/admin/delete-branch/'+branchId,
+          url:'/admin/delete-blog/'+blogId,
           method:'delete',
           success:(response)=>{
             location.reload()
