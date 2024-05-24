@@ -3549,6 +3549,9 @@ html .ui-button.ui-state-disabled:active {
 	font-size: 20px;
 	width: 50px;
 	height: 50px;
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
 	line-height: 50px;
 	right: -1px;
 	bottom: 60px;
@@ -3670,3 +3673,9 @@ html .ui-button.ui-state-disabled:active {
 	border-radius: 100%;
 	margin: 1rem;
   }  
+
+  .product-action li a{
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+  }
