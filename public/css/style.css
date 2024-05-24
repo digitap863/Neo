@@ -2512,7 +2512,7 @@ html .ui-button.ui-state-disabled:active {
 .cart-table .table td .quantity-field{
 	position: absolute;
     margin-top: 25%;
-    left: 50%;
+    left: 30%;
     transform: translate(-50%, -50%);
 }
 
@@ -3622,3 +3622,47 @@ html .ui-button.ui-state-disabled:active {
 	font-size: 28px;
 	margin-bottom: 15px;
 }
+
+.success-container{
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	position: relative;
+}
+
+.success-container img{
+		width: 33%;
+}
+.success-container .success-order-button{
+	margin-top: 1rem;
+}
+.success-container h3{
+	font-weight: 600;
+}
+.success-container h3 span{
+	color: rgb(5, 202, 5);
+}
+.franchise{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 2rem;
+}
+@media(max-width:480px){
+	.success-container img{
+		width: 80%
+	}
+	.success-container h4{
+		font-size: 0.8rem; 
+		margin-top: 0.5rem;
+		text-align: center;
+	}
+}
+
+#map {
+	height: 100%;
+  }
+  

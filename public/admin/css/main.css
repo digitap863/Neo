@@ -4935,7 +4935,7 @@ button.close {
 }
 @media (min-width: 992px) {
   .modal-lg {
-    max-width: 800px;
+    max-width: 1200px;
   }
 }
 .tooltip {
@@ -16101,4 +16101,19 @@ body *:hover::-webkit-scrollbar-thumb {
   font-size: 1rem;
   margin-left: 5px;
   font-weight: 600;
+}
+.line-items{
+  align-items: center;
+  margin: 0.5rem 2rem;
+  border: #000 solid; 
+  border-radius: 15px;
+  padding: 1rem 1rem;
+}
+.line-items p{
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 .5rem;
+}
+.line-items img{
+  width: 8%;
 }

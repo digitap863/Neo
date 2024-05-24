@@ -38,7 +38,7 @@
   <div class="cart-area mt-100">
     <div class="container border-b-light-gray pb-100">
       <div class="cart-table text-center table-responsive-sm">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="cartDiv">
           <thead>
             <tr>
               <th scope="col">Price images</th>
@@ -72,23 +72,24 @@
                 <td>
                   <div class="cart-price">₹ {{this.price}}</div></td>
                 <td>
-                  <div class="quantity-field position-relative d-inline-block">
-                    <input
-                      type="text"
-                      name="select1"
-                      value={{this.quantity}}
-                      class="quantity-input-arrow quantity-input border-light-gray2 primary-color text-center"
-                    />
-                  </div>
+                <div class="quantity-field position-relative d-inline-block">
+  <input
+    type="text"
+    name="select1"
+    value="{{this.quantity}}"
+    class="quantity-input-arrow quantity-input border-light-gray2 primary-color text-center"
+    data-item-id="{{this._id}}"  onchange="updateQuantity(this)"  />
+</div>
                 </td>
                 <td>
-                  <div class="cart-price">₹ {{this.price}}</div>
+                  <div id="#{{this._id}}" class="cart-price">₹ {{this.subTotal}}</div>
                 </td>
                 <td>
                   <button
                     onclick="removeFromCart('{{this._id}}')"
                     type="button"
-                    class="p-remove theme-color"
+                    class="btn btn-danger"
+                    style="color: white;"
                   ><span class="icon-clear"></span></button>
                 </td>
               </tr>
@@ -114,7 +115,7 @@
             </div>
           </div><!-- /col -->
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-            <div class="update-area text-lg-right">
+            {{!-- <div class="update-area text-lg-right">
               <a
                 href="#"
                 class="web-btn d-inline-block theme-bg border-theme02 white text-uppercase over-hidden position-relative pt-20 pb-20 pl-40 pr-40 mt-15 mr-0 mr-md-2"
@@ -123,7 +124,7 @@
                 href="#"
                 class="web-btn d-inline-block theme-bg border-theme02 white text-uppercase over-hidden position-relative pt-20 pb-20 pl-40 pr-40 mt-15"
               >UPDATE CART</a>
-            </div>
+            </div> --}}
           </div><!-- /col -->
         </div><!-- /row -->
       </div>
@@ -137,16 +138,16 @@
               <li
                 class="d-flex justify-content-between align-items-center border-gray mb-1 pl-25 pr-25 pt-15 pb-15"
               >
-                <span>Subtotal</span><span>$360</span>
+                <span>Subtotal</span><span class="subTotal">₹ {{Total}}</span>
               </li>
               <li
                 class="d-flex justify-content-between align-items-center border-gray pl-25 pr-25 pt-15 pb-15"
               >
-                <span>Total </span><span>$360</span>
+                <span>Total </span><span class="total">₹ {{Total}}</span>
               </li>
             </ul>
             <a
-              href="checkout.html"
+              href="/checkout"
               class="web-btn d-inline-block theme-bg border-theme02 white text-uppercase over-hidden position-relative pt-20 pb-20 pl-45 pr-45 mt-15"
             >Proceed to checkout</a>
           </div>
@@ -184,6 +185,36 @@ function removeFromCart(proId) {
       });
     }
   });
+}
+async function updateQuantity(quantityInput) {
+  const itemId = quantityInput.dataset.itemId; 
+  const newQuantity = parseInt(quantityInput.value); // Parse new quantity
+
+  try {
+    const response = await fetch('/change-quantity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId, newQuantity })
+    });
+
+    const data = await response.json();
+
+    if (data.remove) {
+      location.reload()
+    } else {
+      // Handle errors (display error messages, etc.)
+      const subTotal = document.querySelector('.subTotal');
+      const totalElement = document.querySelector('.total');
+      const subTotalElement = document.getElementById(`#${itemId}`);
+      subTotalElement.textContent = data.updatedPrice
+      subTotal.textContent = `₹ ${data.Total}`;
+      totalElement.textContent = `₹ ${data.Total}`;
+    }
+  } catch (error) {
+    console.error('Error updating quantity:', error.message);
+    // Handle errors (display error messages, etc.)
+  }
+
 }
 
 </script>

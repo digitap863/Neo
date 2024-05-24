@@ -3,9 +3,14 @@ const blogs = require("../constants");
 const brandModel = require("../models/brandModel");
 const categoryModel = require("../models/categoryModel");
 const productModel = require("../models/productModel");
+const orderModel = require("../models/orderModel");
+const bannerModel = require("../models/bannerModel");
 module.exports = {
   getHome: async (req, res) => {
     try {
+      const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
+      const banners =latestBanner.images
+      console.log(banners)
       const brands = await brandModel
         .aggregate([{ $sample: { size: 3 } }])
         .exec();
@@ -21,6 +26,7 @@ module.exports = {
         categories,
         popularProducts,
         bestSellerProducts,
+        banners,
         blogs,
       });
     } catch (err) {
@@ -71,9 +77,7 @@ module.exports = {
   getProductDetails: async (req, res) => {
     try {
       const productId = req.params.id;
-      console.log(productId);
       const product = await productModel.findById(productId).lean();
-      console.log(product);
       res.render("user/product-details", { product });
     } catch (err) {
       res.render("error", { message: err });
@@ -90,7 +94,6 @@ module.exports = {
       const products = await productModel
         .find({ category: category.category })
         .lean();
-      console.log(products);
       res.render("user/shop", { products, popularProducts, categories });
     } catch (err) {
       res.render("error", { message: err });
@@ -122,11 +125,15 @@ module.exports = {
           return item.productId.toString() === product._id.toString();
         });
         return {
-          ...product.toObject(), // Convert Mongoose document to plain JavaScript object
-          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0, // Use the quantity from cart or default to 0
+          ...product.toObject(),
+          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+          subTotal: product.price * parseInt(cartItem.quantity, 10),
         };
       });
-      res.render("user/cart", { cartProducts });
+      let Total = 0;
+      cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
+      console.log(cartProducts);
+      res.render("user/cart", { cartProducts, Total });
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -137,21 +144,31 @@ module.exports = {
       const existingProductIndex = req.session.cart.findIndex(
         (item) => item.productId === productId
       );
+
       if (existingProductIndex >= 0) {
         req.session.cart[existingProductIndex].quantity += quantity;
       } else {
         req.session.cart.push({ productId, quantity });
       }
-      res.redirect("/cart");
+
+      // Save the session before redirecting
+      req.session.save((err) => {
+        if (err) {
+          return res.render("error", { message: err });
+        }
+        res.redirect("/cart");
+      });
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  removeFromCart:async(req,res)=>{
+  removeFromCart: async (req, res) => {
     try {
-      const productId = req.params.id
-      const cart = await req.session.cart || [];
-      const productIndex = cart.findIndex(item => item.productId === productId);
+      const productId = req.params.id;
+      const cart = (await req.session.cart) || [];
+      const productIndex = cart.findIndex(
+        (item) => item.productId === productId
+      );
       if (productIndex >= 0) {
         cart.splice(productIndex, 1);
         req.session.cart = cart;
@@ -160,6 +177,127 @@ module.exports = {
         return res.json({ status: false });
       }
     } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  changeQuantity: async (req, res) => {
+    const itemId = req.body.itemId;
+    const newQuantity = parseInt(req.body.newQuantity);
+    try {
+      if (!req.session.cart) {
+        req.session.cart = [];
+        res.redirect("/cart");
+      }
+      req.session.cart = (await req.session.cart) || [];
+      const existingProductIndex = req.session.cart.findIndex(
+        (item) => item.productId === itemId
+      );
+      if (existingProductIndex >= 0) {
+        if (newQuantity > 0) {
+          req.session.cart[existingProductIndex].quantity = newQuantity;
+        } else {
+          req.session.cart.splice(existingProductIndex, 1);
+          return res.json({ remove: true });
+        }
+      } else {
+        console.warn(
+          `Item with ID ${itemId} not found in cart, ignoring change.`
+        );
+      }
+      const cart = req.session.cart;
+      const productIds = cart.map(
+        (item) => new mongoose.Types.ObjectId(item.productId)
+      );
+      const products = await productModel.find({ _id: { $in: productIds } });
+      const cartProducts = products.map((product) => {
+        const cartItem = cart.find((item) => {
+          return item.productId.toString() === product._id.toString();
+        });
+        return {
+          ...product.toObject(),
+          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+          subTotal: product.price * parseInt(cartItem.quantity, 10),
+        };
+      });
+      const product = cartProducts.find((item) => {
+        return item._id.toString() === itemId;
+      });
+      let updatedPrice = product.subTotal;
+      let Total = 0;
+      cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
+
+      res.json({ status: true, Total, cartProducts, updatedPrice });
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  getCheckout: async (req, res) => {
+    try {
+      const cart = await req.session.cart;
+      const productIds = cart.map(
+        (item) => new mongoose.Types.ObjectId(item.productId)
+      );
+      const products = await productModel.find({ _id: { $in: productIds } });
+      const cartProducts = products.map((product) => {
+        const cartItem = cart.find((item) => {
+          return item.productId.toString() === product._id.toString();
+        });
+        return {
+          ...product.toObject(),
+          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+          subTotal: product.price * parseInt(cartItem.quantity, 10),
+        };
+      });
+      let Total = 0;
+      cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
+      res.render("user/checkout", { products: cartProducts, total: Total });
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  postCheckout: async (req, res) => {
+    try {
+      const data = req.body;
+      const cart = await req.session.cart;
+      const productIds = cart.map(
+        (item) => new mongoose.Types.ObjectId(item.productId)
+      );
+      const products = await productModel.find({ _id: { $in: productIds } });
+      const cartProducts = products.map((product) => {
+        const cartItem = cart.find((item) => {
+          return item.productId.toString() === product._id.toString();
+        });
+        return {
+          ...product.toObject(),
+          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+          subTotal: product.price * parseInt(cartItem.quantity, 10),
+        };
+      });
+      let total = 0;
+      cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+      const orderData = {
+        ...data,
+        lineItems: cartProducts,
+        total,
+      };
+      const newOrder = new orderModel(orderData);
+      await newOrder.save();
+      res.redirect("/order-success");
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  getOrderSuccess:(req,res)=>{ 
+    try{
+      res.render("user/order-success");
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  getFranchise:(req,res)=>{
+    try{
+      res.render("user/franchise");
+    }catch(err){
       res.render("error", { message: err });
     }
   }
