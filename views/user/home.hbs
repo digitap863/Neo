@@ -473,11 +473,18 @@
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
           <div class="single-blog mb-30 wow slideInUp">
             <div class="blog-img over-hidden transition-3">
-              <a href="blog-details.html"><img
+              <a href="blog-details.html">
+                {{!-- <img
                   class="img-zoom width100 height100"
                   src="/neo/{{this.img}}"
                   alt=""
-                /></a>
+                /> --}}
+                {{#each this.images}}
+        {{#if @first}}
+            <img  class="img-zoom width100 height100" src="/uploads/{{this}}" alt="">
+        {{/if}}
+    {{/each}}
+    </a>
             </div>
             <div class="single-blog-content bg-white pt-25">
               <ul class="single-blog-info d-flex mb-10">
@@ -498,17 +505,17 @@
                   </a>
                 </li>
               </ul>
-              <h5><a class="pb-2 d-block" href="blog-details.html">{{this.heading}}</a></h5>
+              <h5><a class="pb-2 d-block" href="blog-details.html">{{this.title}}</a></h5>
               <p class="pb-1">{{this.content}}</p>
               <ul class="blogger d-flex align-items-center">
                 <li>
-                  <img class="mr-2" src="/neo/blog-author.png" alt="" />
+                  <img class="blog-author" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" />
                 </li>
                 <li>
                   <span class="primary-color"><span
                       class="gray-color2"
                     >By</span>
-                    David Warner</span>
+                    Author</span>
                 </li>
               </ul>
             </div>
@@ -634,7 +641,7 @@
               <!-- product-details-tab-area start -->
               <div class="product-details-content pl-20 pr-20">
                 <div
-                  class="single-product-tab-content main-tab-content tab-content pt-19"
+                  class="single-product-tab-content main-tab-content tab-fdcontent pt-19"
                   id="myTabContent10"
                 >
                   <div class="row">

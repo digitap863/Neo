@@ -3665,4 +3665,8 @@ html .ui-button.ui-state-disabled:active {
 #map {
 	height: 100%;
   }
-  
+  .blog-author{
+	width: 2rem;
+	border-radius: 100%;
+	margin: 1rem;
+  }  

@@ -1,10 +1,37 @@
 const { default: mongoose } = require("mongoose");
-const blogs = require("../constants");
+// const blogs = require("../constants");
 const brandModel = require("../models/brandModel");
 const categoryModel = require("../models/categoryModel");
 const productModel = require("../models/productModel");
 const orderModel = require("../models/orderModel");
 const bannerModel = require("../models/bannerModel");
+const blogModel = require("../models/blogModel");
+const { default: axios } = require("axios");
+
+function sendTelegramAlert(order) {
+  const message = `<b>A bew order has been placed! 🎉</b>
+
+  <b>Order Details:</b>
+  - <b>Order ID:</b> TOK${order._id}
+  - <b>Order Time:</b> ${order.time}
+  - <b>Date:</b> ${order.date}
+  - <b>Total Amount:</b> ₹${order.total} /-
+  - <b>Items Number:</b> ${order.lineItems.length}
+  
+  Please remember ⚠️ to check the <b>admin dashboard</b> for more details.`;
+  return new Promise((resolve, reject) => {
+    axios
+      .get(
+        `https://api.telegram.org/bot6846417459:AAHoijJVqugNcfECQ9gPdNQ3bmaeM48CWXI/sendMessage?chat_id=-4268736732&text=${encodeURIComponent(message)}&parse_mode=HTML`
+      )
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        resolve();
+      });
+  });
+}
 module.exports = {
   getHome: async (req, res) => {
     try {
@@ -15,6 +42,7 @@ module.exports = {
         .aggregate([{ $sample: { size: 3 } }])
         .exec();
       const categories = await categoryModel.find({}).lean();
+      const blogs = await blogModel.find({}).lean();
       const popularProducts = await productModel
         .aggregate([{ $sample: { size: 10 } }])
         .exec();
@@ -281,7 +309,14 @@ module.exports = {
         total,
       };
       const newOrder = new orderModel(orderData);
-      await newOrder.save();
+      await newOrder.save(); 
+      const order = newOrder
+        const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+
+        order.date = indianTime.format("DD-MM-YYYY"),
+          order.time = indianTime.format("hh:mm:ss A"),
+
+      sendTelegramAlert(newOrder)
       res.redirect("/order-success");
     } catch (err) {
       res.render("error", { message: err });
