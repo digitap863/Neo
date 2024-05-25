@@ -698,7 +698,7 @@ input:focus-visible {
 	-webkit-animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
 	animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
 	-webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
-	background: #ffffff !important;
+	background: #00AEEF !important;
 }
 .floating-menu{
 	border-radius: 10%;
@@ -713,7 +713,7 @@ input:focus-visible {
 	-webkit-animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
 	animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
 	-webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
-	background: #ffffffcf !important;
+	background: #00afef8d !important;
 }
 
 .sticky-menu .header-right{
@@ -782,12 +782,12 @@ input:focus-visible {
 		bottom: 0;
 		width: 2px;
 		height: 0;
-		background: #ff3030;
+		background: white;
 		top: auto;
 		transition: .3s;
   }
   .main-menu ul li:hover > a {
-	color: #ff3030;
+	color: white;
   }
   .main-menu ul li:hover > a::before {
 	height: 35px;
@@ -3236,7 +3236,7 @@ html .ui-button.ui-state-disabled:active {
 -------------------------------------------------------------- */
 
 .footer-bg {
-	background: #151616;
+	background: #00AEEF;
 }
 
 .footer-top li a {
@@ -3247,7 +3247,7 @@ html .ui-button.ui-state-disabled:active {
 .footer-area li a,
 .footer-area li,
 .footer-area p a {
-	color: #a3a3a3;
+	color: white;
 	font-size: 15px;
 	line-height: 1;
 }
@@ -3256,7 +3256,7 @@ html .ui-button.ui-state-disabled:active {
 .footer-area p a:hover,
 .social-link li a.active,
 .footer-area p a.c-theme {
-	color: #ff3030
+	color: black
 }
 
 .footer-area p {
@@ -3678,4 +3678,29 @@ html .ui-button.ui-state-disabled:active {
 	display: flex !important;
 	justify-content: center;
 	align-items: center;
+  }
+
+  .contact-branches{
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  gap: 1rem;
+	}
+	.contact-branches .branch{
+		width: 75%;
+		height: 10rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 10rem;
+		border-radius: 10px;
+		border: #333333 solid;
+
+  }
+  .contact-branches .branch h5{
+	width: 30%;
+  }
+
+  .contact-branches .branch p{
+	width: 20%;
   }

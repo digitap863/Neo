@@ -1,5 +1,5 @@
 var express = require('express');
-const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog, getLogin, postLogin, adminLogout } = require('../controllers/adminController');
+const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog, getLogin, postLogin, adminLogout, deleteOfferBanner } = require('../controllers/adminController');
 const {upload} = require('../middlewares/multer');
 const { verifyAdminLoggedOut, verifyAdminLoggedIn } = require('../middlewares/Sessionhandle');
 var router = express.Router();
@@ -27,6 +27,8 @@ router.get('/done-orders',verifyAdminLoggedOut,getDoneOrders)
 router.put('/update-order/:id',verifyAdminLoggedOut,updateOrder)
 
 router.route('/offer-banner').get(verifyAdminLoggedOut,getOfferBanner).post(verifyAdminLoggedOut,upload.any('image'),addOfferBanner)
+router.delete('/offer-delete/:id',verifyAdminLoggedOut,deleteOfferBanner)
+
 
 router.route('/add-blog').get(verifyAdminLoggedOut,getAddBlog).post(verifyAdminLoggedOut,upload.any('image'),addBlog)
 router.route('/add-branch').get(verifyAdminLoggedOut,getAddBranch).post(verifyAdminLoggedOut,addBranch)

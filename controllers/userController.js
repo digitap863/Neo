@@ -8,6 +8,7 @@ const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
 const { default: axios } = require("axios");
 const moment = require("moment-timezone");
+const branchModel = require("../models/branchesModel");
 
 function sendTelegramAlert(order) {
   console.log('entered telegram')
@@ -85,16 +86,27 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
-  getContact: (req, res) => {
+  getContact: async(req, res) => {
     try {
-      res.render("user/contact");
+      const branches = await branchModel.find({}).lean()
+      res.render("user/contact",{branches});
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  getBlog: (req, res) => {
+  getBlog: async(req, res) => {
     try {
-      res.render("user/blogs");
+      const blogs = await blogModel.find({}).lean();
+      const updatesBlogs = blogs.map((order) => {
+        const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+        return {
+          ...order,
+          date: indianTime.format("DD-MM-YYYY"),
+          time: indianTime.format("hh:mm:ss A"),
+        };
+      });
+      console.log(updatesBlogs)
+      res.render("user/blogs",{blogs:updatesBlogs});
     } catch (err) {
       res.render("error", { message: err });
     }

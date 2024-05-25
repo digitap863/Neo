@@ -214,7 +214,8 @@ module.exports = {
   },
   getOfferBanner: async (req, res) => {
     try {
-      res.render("admin/OfferBanner", { admin: true });
+      const offerBanners = await bannerModel.find({}).lean()
+      res.render("admin/OfferBanner", { admin: true,offerBanners });
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -232,6 +233,16 @@ module.exports = {
       res.redirect("/admin/offer-banner");
     } catch (err) {
       res.render("error", { message: err });
+    }
+  },
+  deleteOfferBanner:(req,res)=>{
+    try{
+      const offerId = req.params.id
+      bannerModel.findByIdAndDelete(offerId).then(() => {
+        res.json({});
+      });
+     }catch(err){
+      res.render("error",{message:err})
     }
   },
   getAddBlog: async (req, res) => {

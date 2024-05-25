@@ -15,10 +15,14 @@
                                             </tr>
                                         </thead>
                                                 <tbody>
-                                           {{#each brands}}
+                                           {{#each offerBanners}}
                                             <tr>
-                                                <td>{{this.brand}}</td>
-                                                <td><img class="max-w-20" src="/uploads/{{this.image}}" alt=""></td>
+                                                <td>{{this.bannerName}}</td>
+                                                <td>
+                                                  {{#each this.images}}
+                                                  <img class="max-w-20" style="margin: 0.5rem 0;" src="/uploads/{{this}}" alt="">
+                                                  {{/each}}
+                                                </td>
                                                 <td><button  onclick="sure('{{this._id}}')" class="bg-red-500 rounded-lg text-white font-semibold p-2 hover:bg-red-300">Delete</button></td>
                                             </tr>
                                              {{/each}}
@@ -44,7 +48,7 @@
 </div>
 </div>
  <script>
-      function sure(brandId) {
+      function sure(offerId) {
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
@@ -61,7 +65,7 @@
               'success'
             )
              $.ajax({
-          url:'/admin/delete-brand/'+brandId,
+          url:'/admin/offer-delete/'+offerId,
           method:'delete',
           success:(response)=>{
             location.reload()

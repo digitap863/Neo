@@ -1,4 +1,4 @@
-  <main style="margin-top: 5re;">
+  <main style="margin-top: 5rem;">
 
             <!-- ======slider-area-start=========================================== -->
             <div class="slider-area over-hidden">
@@ -87,7 +87,16 @@
                 </div><!-- /container -->
             </div>
             <!-- contact-form-area-end -->
-            
+            <div class="contact-branches">
+                {{#each branches}}
+                <div class="branch">
+                    <h5>{{this.name}}</h5>
+                    <p>{{this.address}}</p>
+                    <a href="tel:{{this.phone}}" class="btn btn-success">Call Now</a>
+                    <a href="{{this.link}}" target="_blank" rel="noreferrer" class="direction btn btn-primary">View On Map</a>
+                </div>
+                {{/each}}
+            </div>
             <!-- ====== contact-information-area-start=============================================== --> 
             <div class="contact-information-area position-relative mt--35">
                 <div class="container">
