@@ -1,33 +1,35 @@
 var express = require('express');
-const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog } = require('../controllers/adminController');
+const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog, getLogin, postLogin, adminLogout } = require('../controllers/adminController');
 const {upload} = require('../middlewares/multer');
+const { verifyAdminLoggedOut, verifyAdminLoggedIn } = require('../middlewares/Sessionhandle');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/',getHome);
+router.get('/',verifyAdminLoggedOut,getHome);
+router.route('/login').get(verifyAdminLoggedIn,getLogin).post(postLogin)
+router.get('/logout',verifyAdminLoggedOut,adminLogout)
+router.post('/add-brand',verifyAdminLoggedOut,upload.any('image'),addBrand)
+router.get('/brands',verifyAdminLoggedOut,getBrands)
+router.delete('/delete-brand/:id',verifyAdminLoggedOut,deleteBrand)
 
-router.post('/add-brand',upload.any('image'),addBrand)
-router.get('/brands',getBrands)
-router.delete('/delete-brand/:id',deleteBrand)
+router.post('/add-category',verifyAdminLoggedOut,upload.any('image'),addCategory)
+router.get('/categories',verifyAdminLoggedOut,getCategories)
+router.delete('/delete-category/:id',verifyAdminLoggedOut,deleteCategory)
 
-router.post('/add-category',upload.any('image'),addCategory)
-router.get('/categories',getCategories)
-router.delete('/delete-category/:id',deleteCategory)
-
-router.get('/products',getProducts)
-router.route('/add-product').get(getAddProducts).post(upload.any('image'),addProduct)
-router.route('/edit-product/:id').get(geteditProduct).post(upload.any('image'),editProduct)
-router.delete('/delete-product/:id',deleteProduct)
+router.get('/products',verifyAdminLoggedOut,getProducts)
+router.route('/add-product').get(verifyAdminLoggedOut,getAddProducts).post(verifyAdminLoggedOut,upload.any('image'),addProduct)
+router.route('/edit-product/:id').get(verifyAdminLoggedOut,geteditProduct).post(verifyAdminLoggedOut,upload.any('image'),editProduct)
+router.delete('/delete-product/:id',verifyAdminLoggedOut,deleteProduct)
 
 
-router.get('/orders',getOrders)
-router.get('/done-orders',getDoneOrders)
-router.put('/update-order/:id',updateOrder)
+router.get('/orders',verifyAdminLoggedOut,getOrders)
+router.get('/done-orders',verifyAdminLoggedOut,getDoneOrders)
+router.put('/update-order/:id',verifyAdminLoggedOut,updateOrder)
 
-router.route('/offer-banner').get(getOfferBanner).post(upload.any('image'),addOfferBanner)
+router.route('/offer-banner').get(verifyAdminLoggedOut,getOfferBanner).post(verifyAdminLoggedOut,upload.any('image'),addOfferBanner)
 
-router.route('/add-blog').get(getAddBlog).post(upload.any('image'),addBlog)
-router.route('/add-branch').get(getAddBranch).post(addBranch)
-router.delete('/delete-branch/:id',deleteBranch)
-router.delete('/delete-blog/:id',deleteBlog)
+router.route('/add-blog').get(verifyAdminLoggedOut,getAddBlog).post(verifyAdminLoggedOut,upload.any('image'),addBlog)
+router.route('/add-branch').get(verifyAdminLoggedOut,getAddBranch).post(verifyAdminLoggedOut,addBranch)
+router.delete('/delete-branch/:id',verifyAdminLoggedOut,deleteBranch)
+router.delete('/delete-blog/:id',verifyAdminLoggedOut,deleteBlog)
 module.exports = router;

@@ -22,6 +22,9 @@
   integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
   
   crossorigin="anonymous"></script>
+  {{else login}}
+  {{!-- {{#if login}} --}}
+
   {{else}}
   <!-- Place favicon.ico in the root directory -->
   <link rel="shortcut icon" type="image/x-icon" href="/neo/logo.png" />
@@ -46,12 +49,16 @@
 <body>
   {{#if admin}}
   {{>admin-sidebar}}
+  {{else login}}
+
   {{else}}
   {{>user-header}}
   {{/if}}
   {{{body}}}
   {{#if admin}}
   {{>admin-footer}}
+  {{else login}}
+  
   {{else}}
   {{>user-footer}}
   {{/if}}

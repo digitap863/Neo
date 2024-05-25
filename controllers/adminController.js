@@ -7,6 +7,10 @@ const productModel = require("../models/productModel");
 const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
 const branchModel = require("../models/branchesModel");
+const admin = {
+  email:'neo@admin.com',
+  password:'neo@admin'
+}
 
 module.exports = {
   getHome: (req, res) => {
@@ -298,4 +302,38 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
+  getLogin:(req,res)=>{
+    try{
+      res.render("admin/login",{login:true})
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  postLogin:(req,res)=>{
+    try{
+      console.log(req.body)
+      const {email,password} = req.body
+      if(email !== admin.email ){
+        req.session.msg = 'Invalid email'
+        return res.redirect('/admin/login')
+      } 
+      if(password !== admin.password){
+        req.session.msg = 'Invalid password'
+        return res.redirect('/admin/login')
+      }
+      req.session.login = true
+      res.redirect('/admin')
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  adminLogout:(req,res)=>{
+    try{
+      req.session.login = false
+      req.session.msg = false
+      res.redirect('/admin/login')
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  }
 };

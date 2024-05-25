@@ -7,14 +7,17 @@ const orderModel = require("../models/orderModel");
 const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
 const { default: axios } = require("axios");
+const moment = require("moment-timezone");
 
 function sendTelegramAlert(order) {
-  const message = `<b>A bew order has been placed! 🎉</b>
+  console.log('entered telegram')
+    const message = `<b>A bew order has been placed! 🎉</b>
 
   <b>Order Details:</b>
-  - <b>Order ID:</b> TOK${order._id}
+  - <b>Order ID:</b> NEO${order._id}
   - <b>Order Time:</b> ${order.time}
   - <b>Date:</b> ${order.date}
+  - <b>Customer Phone:</b> ${order.phone}
   - <b>Total Amount:</b> ₹${order.total} /-
   - <b>Items Number:</b> ${order.lineItems.length}
   
@@ -24,11 +27,13 @@ function sendTelegramAlert(order) {
       .get(
         `https://api.telegram.org/bot6846417459:AAHoijJVqugNcfECQ9gPdNQ3bmaeM48CWXI/sendMessage?chat_id=-4268736732&text=${encodeURIComponent(message)}&parse_mode=HTML`
       )
-      .then(() => {
-        resolve();
+      .then((response) => {
+        console.log(response)
+        resolve(response);
       })
-      .catch(() => {
-        resolve();
+      .catch((err) => {
+        console.log(err)
+        resolve(response);
       });
   });
 }
@@ -37,7 +42,7 @@ module.exports = {
     try {
       const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
       const banners =latestBanner.images
-      console.log(banners)
+      console.log(banners) 
       const brands = await brandModel
         .aggregate([{ $sample: { size: 3 } }])
         .exec();
@@ -316,8 +321,9 @@ module.exports = {
         order.date = indianTime.format("DD-MM-YYYY"),
           order.time = indianTime.format("hh:mm:ss A"),
 
-      sendTelegramAlert(newOrder)
-      res.redirect("/order-success");
+      sendTelegramAlert(newOrder).then(()=>{
+        res.redirect("/order-success");
+      })
     } catch (err) {
       res.render("error", { message: err });
     }
