@@ -23,8 +23,9 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: Delete node_modules and package-lock.json
+      - name: Ensure clean working directory
         run: |
+          git clean -fdx
           rm -rf node_modules
           rm -f package-lock.json
 
@@ -39,7 +40,6 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "server"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: "/home/ubuntu/server"
