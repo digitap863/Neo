@@ -201,7 +201,7 @@ function mainSlider() {
         dots: false,
         fade: true,
         autoplay: true,
-        autoplaySpeed: 5000,
+        autoplaySpeed: 3500,
         arrows: false,
         responsive: [
             { breakpoint: 767, settings: {} }
@@ -371,26 +371,26 @@ $('.product-items-active').slick({
     dots: false,
     arrows: false,
     infinite: true,
-    autoplay:true,
-    slidesToShow: 5,
+    // autoplay:true,
+    slidesToShow: 1,
     slidesToScroll: 1,
     responsive: [
         {
             breakpoint: 1200,
             settings: {
-                slidesToShow: 4,
+                slidesToShow: 1,
             }
         },
         {
             breakpoint:991,
             settings: {
-                slidesToShow: 3,
+                slidesToShow: 1,
             }
         },
         {
             breakpoint: 575,
             settings: {
-                slidesToShow: 2,
+                slidesToShow: 1,
             }
         },
         {

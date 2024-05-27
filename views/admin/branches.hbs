@@ -10,6 +10,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Short Desc</th>
                                                 <th>Address</th>
                                                 <th>Phone</th>
                                                 <th>Map Link</th>
@@ -20,6 +21,7 @@
                                            {{#each branches}}
                                             <tr>
                                                 <td>{{this.name}}</td>
+                                                <td>{{this.shortDesc}}</td>
                                                 <td>{{this.address}}</td>
                                                 <td><a href="tel:{{this.phone}}" target="_blank" rel="noreferrer">{{this.phone}}</a></td>
                                                 <td><a href="{{this.link}}" target="_blank" rel="noreferrer" class="btn btn-primary">Go To Map</a></td>

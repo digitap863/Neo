@@ -1,4 +1,4 @@
-   <main>
+   <main style="margin-top: 5rem;">
 
             <!-- ======slider-area-start=========================================== -->
             <div class="slider-area over-hidden">
@@ -43,39 +43,17 @@
                                     </div><!-- /col -->
                                 </div><!-- /row -->
                                 <div class="popular-product mt-10">
-                                    <div class="row product-active">
+                                    <div class="row">
                                        {{#each categories}}
-                                        <div class="col-xl-4  col-lg-3  col-md-6  col-sm-6 col-12">
+                                        <div class="col-12" style="width: 100%;">
                                             <div class="s-p-wrapper">
                                                 <div class="single-product mb-35">
                                                     <div class="single-product-img position-relative over-hidden">
-                                                        <a class="position-relative d-block" href="/category/{{this._id}}">
+                                                        <a class="position-relative d-block category-image" href="/category/{{this._id}}">
                                                             <img class="width100 height100" src="/uploads/{{this.image}}" alt="product">
                                                         </a>
-                                                        <ul class="product-action d-flex position-absolute transition-3">
-                                                            <li data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                                <a href="cart.html" class="text-center mb-10 white-bg primary-color d-block">
-                                                                    <span><i class="far fa-shopping-cart"></i></span>
-                                                                </a>
-                                                            </li>
-                                                            <li data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
-                                                                <a href="wishlist.html" class="text-center mb-10 white-bg primary-color d-block">
-                                                                    <span><i class="far fa-heart"></i></span>
-                                                                </a>
-                                                            </li>
-                                                            <li data-toggle="tooltip" data-placement="top" title="Add to Compare">
-                                                                <a href="/product/{{this._id}}" class="text-center mb-10 white-bg primary-color d-block">
-                                                                    <span><i class="far fa-repeat"></i></span>
-                                                                </a>
-                                                            </li>
-                                                            <li data-toggle="tooltip" data-placement="top" title="Quick view">
-                                                                <a href="#" class="text-center mb-10 white-bg primary-color d-block" data-toggle="modal" data-target="#product-modal">
-                                                                    <span><i class="far fa-expand-wide"></i></span>
-                                                                </a>
-                                                            </li>
-                                                        </ul><!-- /view-btn -->
                                                     </div><!-- /single-product-img -->
-                                                    <div class="single-product-info position-relative mt-25">
+                                                    <div class="single-product-info position-relative mt-25 category-image">
                                                         <h6><a href="/product/{{this._id}}">{{this.category}}</a></h6>
                                                         
                                                     </div>
@@ -96,70 +74,7 @@
 
 
             <!-- ====== brand-logo-area-start ========================================= -->
-            <div class="brand-logo-area bg-white over-hidden">
-                <div class="container border-t-gray pt-75 pb-75">
-                    <div class="mlr--60">
-                        <div class="row brand-active d-flex align-items-center justify-content-lg-between">
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand1.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand2.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand3.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand4.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand5.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand6.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand3.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-12  col-lg-2  col-md-2  col-sm-2 col-2">
-                                <div class="text-center">
-                                    <a href="#" class="d-block p-1">
-                                        <img class="d-inline-block" src="images/brand/brand5.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                        </div><!-- /brand-active -->
-                    </div>
-                </div><!-- /container -->
-            </div>
+      
             <!-- brand-logo-area-end  -->
 
 

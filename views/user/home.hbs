@@ -131,7 +131,7 @@
   <!-- ====== product-items-area-start ========================================= -->
   <div class="product-items-area mb-75">
     <div class="container">
-      <ul class="product-items-active h2-gray-border10 pt-50 pb-60">
+      <ul class="product-items-active h2-gray-border10 pt-20 pb-20">
         {{#each categories}}
           <li class="single-product-items text-center">
             <a href="/product/{{this._id}}">
@@ -172,7 +172,6 @@
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pb-15">
             <div class="section-title text-center">
-              <span class="theme-color d-block pb-2">Featured Product</span>
               <h3>Popular Products</h3>
             </div><!-- /section-title -->
           </div><!-- /col -->
@@ -200,60 +199,7 @@
                           {{/if}}
                         {{/each}}
                       </a>
-                      <ul
-                        class="product-action d-flex position-absolute transition-3"
-                      >
-                        <li
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Add to Cart"
-                        >
-                          <a
-                            href="cart.html"
-                            class="text-center mb-10 white-bg primary-color d-block"
-                          >
-                            <span><i class="far fa-shopping-cart"></i></span>
-                          </a>
-                        </li>
-                        <li
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Add to Wishlist"
-                        >
-                          <a
-                            href="wishlist.html"
-                            class="text-center mb-10 white-bg primary-color d-block"
-                          >
-                            <span><i class="far fa-heart"></i></span>
-                          </a>
-                        </li>
-                        <li
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Add to Compare"
-                        >
-                          <a
-                            href="/product/{{this._id}}"
-                            class="text-center mb-10 white-bg primary-color d-block"
-                          >
-                            <span><i class="far fa-repeat"></i></span>
-                          </a>
-                        </li>
-                        <li
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Quick view"
-                        >
-                          <a
-                            href="#"
-                            class="text-center mb-10 white-bg primary-color d-block"
-                            data-toggle="modal"
-                            data-target="#product-modal"
-                          >
-                            <span><i class="far fa-expand-wide"></i></span>
-                          </a>
-                        </li>
-                      </ul><!-- /view-btn -->
+                    
                     </div><!-- /single-product-img -->
                     <div class="single-product-info position-relative mt-25">
                       <h6><a href="/product/{{this._id}}">{{this.name}}</a></h6>
@@ -301,7 +247,6 @@
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pb-15">
             <div class="section-title text-center">
-              <span class="theme-color d-block pb-2">Regular Product</span>
               <h3>Best Seller Products</h3>
             </div><!-- /section-title -->
           </div><!-- /col -->
@@ -332,60 +277,7 @@
                             {{/if}}
                           {{/each}}
                         </a>
-                        <ul
-                          class="product-action d-flex position-absolute transition-3"
-                        >
-                          <li
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Add to Cart"
-                          >
-                            <a
-                              href="cart.html"
-                              class="text-center mb-10 white-bg primary-color d-block"
-                            >
-                              <span><i class="far fa-shopping-cart"></i></span>
-                            </a>
-                          </li>
-                          <li
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Add to Wishlist"
-                          >
-                            <a
-                              href="wishlist.html"
-                              class="text-center mb-10 white-bg primary-color d-block"
-                            >
-                              <span><i class="far fa-heart"></i></span>
-                            </a>
-                          </li>
-                          <li
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Add to Compare"
-                          >
-                            <a
-                              href="/product/{{this._id}}"
-                              class="text-center mb-10 white-bg primary-color d-block"
-                            >
-                              <span><i class="far fa-repeat"></i></span>
-                            </a>
-                          </li>
-                          <li
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Quick view"
-                          >
-                            <a
-                              href="#"
-                              class="text-center mb-10 white-bg primary-color d-block"
-                              data-toggle="modal"
-                              data-target="#product-modal"
-                            >
-                              <span><i class="far fa-expand-wide"></i></span>
-                            </a>
-                          </li>
-                        </ul><!-- /view-btn -->
+                     
                       </div><!-- /single-product-img -->
                       <div class="single-product-info position-relative mt-25">
                         <h6><a href="/product/{{this._id}}">Valter Brass Drink
@@ -412,7 +304,7 @@
   <!-- product-area-end  -->
 
   <!-- ====== subscribe-area-start ========================================= -->
-  <div
+  {{!-- <div
     class="subscribe-area pt-80 pb-30 wow slideInUp"
     data-background="/neo/subscribe-bg.jpg"
   >
@@ -454,7 +346,7 @@
         </div><!-- /col -->
       </div><!-- /row -->
     </div><!-- /container -->
-  </div>
+  </div> --}}
   <!-- subscribe-area-end  -->
 
   <!-- ====== blog-area-start=============================================== -->
@@ -528,7 +420,7 @@
   <!-- blog-area-end -->
 
   <!-- ====== brand-logo-area-start ========================================= -->
-  <div class="brand-logo-area bg-white over-hidden">
+  {{!-- <div class="brand-logo-area bg-white over-hidden">
     <div class="container border-t-gray pt-80 pb-80">
       <div class="mlr--60">
         <div
@@ -625,7 +517,7 @@
         </div><!-- /brand-active -->
       </div>
     </div><!-- /container -->
-  </div>
+  </div> --}}
   <!-- brand-logo-area-end  -->
 
   <!-- Modal start -->

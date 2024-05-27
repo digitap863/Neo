@@ -153,6 +153,7 @@ module.exports = {
       }
       product.name = name;
       product.category = category;
+      product.shortDesc = shortDesc;
       product.brand = brand;
       product.description = description;
       product.price = price;
