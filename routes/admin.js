@@ -1,5 +1,5 @@
 var express = require('express');
-const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog, getLogin, postLogin, adminLogout, deleteOfferBanner } = require('../controllers/adminController');
+const { getHome, getBrands, addBrand, addCategory, getCategories, getAddProducts, addProduct, getProducts, deleteCategory, deleteBrand, geteditProduct, editProduct, deleteProduct, getOrders, getDoneOrders, updateOrder, getOfferBanner, addOfferBanner, getAddBlog, addBlog, getAddBranch, addBranch, deleteBranch, deleteBlog, getLogin, postLogin, adminLogout, deleteOfferBanner, getEditCategory, EditCategory } = require('../controllers/adminController');
 const {upload} = require('../middlewares/multer');
 const { verifyAdminLoggedOut, verifyAdminLoggedIn } = require('../middlewares/Sessionhandle');
 var router = express.Router();
@@ -15,6 +15,7 @@ router.delete('/delete-brand/:id',verifyAdminLoggedOut,deleteBrand)
 router.post('/add-category',verifyAdminLoggedOut,upload.any('image'),addCategory)
 router.get('/categories',verifyAdminLoggedOut,getCategories)
 router.delete('/delete-category/:id',verifyAdminLoggedOut,deleteCategory)
+router.route('/edit-category/:id').get(getEditCategory).post(upload.any('image'),EditCategory)
 
 router.get('/products',verifyAdminLoggedOut,getProducts)
 router.route('/add-product').get(verifyAdminLoggedOut,getAddProducts).post(verifyAdminLoggedOut,upload.any('image'),addProduct)

@@ -57,7 +57,7 @@
                         </div><!-- /col -->
                         <div class="col-xl-8  col-lg-8  col-md-12 col-sm-12 col-12">
                             <div class="contact-form-right mt-55">
-                                <form action="#" class="text-center">
+                                <form action="/contact-form" method="post" class="text-center">
                                     <h4 class=" text-left dark-black-color pb-15 d-block">Write to us</h4>
                                         <div class="row">
                                             <div class="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
@@ -72,7 +72,11 @@
                                             </div><!-- /col -->
                                         </div><!-- /row -->
                                     <div class="subject mb-20">
-                                        <input type="text" class="form-control primary-bg2" name="subject" id="subject" placeholder="Subject*" >
+                                         <select class="w-100 primary-bg2 mb-20" required>
+                                                <option selected value="Products Related Query">Products Related Query</option>
+                                                <option value="Franchise Related Query">Franchise Related Query</option>
+                                                <option value="other">Other</option>
+                                            </select>
                                     </div>
                                     <div class="comment mb-25">
                                         <textarea name="message" class="form-control primary-bg2" id="message" placeholder="Comments"></textarea>

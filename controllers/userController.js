@@ -350,5 +350,45 @@ module.exports = {
     }catch(err){
       res.render("error", { message: err });
     }
+  },
+  submitContactForm:(req,res)=>{
+    try {
+      const { name, email, phone, service, form } = req.body;
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "joscoapp@gmail.com",
+          pass: "vpgaoocnbgdeigsu",
+        },
+      });
+      const mailOptions = {
+        from: email,
+        to: "joscofacility2016@gmail.com",
+        subject:service,
+        text: `Hi
+        my name is ${name},My contact is ${phone}. I want to enquire about ${service}`,
+      };
+      transporter.sendMail(mailOptions,function(error,info){
+        if(error){
+          console.log(error)
+        }else{
+          console.log("Email send: "+info.response)
+        }
+        if(form==='home'){
+          res.redirect('/')
+          return
+        }
+        if(form==='service'){
+          res.redirect('/services')
+          return
+        }
+        if(form==='contact'){
+          res.redirect('/contact')
+          return
+        }
+      })
+    }catch(err){
+      res.render("error", { message: err });
+    }
   }
 };

@@ -19,6 +19,7 @@ router.get('/category/:id',getCategoryProducts)
 router.get('/brand/:id',getBrandProducts)
 router.get('/contact',getContact)
 router.get('/franchise',getFranchise)
+router.post('/contact-form')
 
 module.exports = router;
     

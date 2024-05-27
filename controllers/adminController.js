@@ -145,7 +145,7 @@ module.exports = {
   },
   editProduct: async (req, res) => {
     const productId = req.params.id;
-    const { name, category, brand, description, price } = req.body;
+    const { name, category, brand, description, price,shortDesc } = req.body;
     try {
       const product = await productModel.findById(productId);
       if (req.files.length > 0) {
@@ -347,5 +347,34 @@ module.exports = {
     }catch(err){
       res.render("error", { message: err });
     }
-  }
+  },
+  getEditCategory:async(req,res)=>{
+    try{
+      const categoryId = req.params.id
+      const category = await categoryModel.findById(categoryId).lean()
+            console.log(category)
+      res.render('admin/editCategory',{admin:true,category})
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  EditCategory:async(req,res)=>{
+    try{
+      const categoryId = req.params.id
+      const { category } = req.body;
+      let image 
+      if( req.files[0]){
+        image =  req.files[0].filename;
+      }
+      const editedCategory = await categoryModel.findById(categoryId)
+      editedCategory.category = category
+      if(image){
+        editedCategory.image = image
+      }
+      await editedCategory.save()
+      res.redirect('/admin/categories')
+    }catch(err){
+      res.render("error", { message: err });
+    } 
+   }
 };

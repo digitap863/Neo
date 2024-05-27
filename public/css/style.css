@@ -701,7 +701,7 @@ input:focus-visible {
 	background: #00AEEF !important;
 }
 .floating-menu{
-	border-radius: 10%;
+	border-radius: 10px;
 	left: 3%;
 	margin: auto;
 	position: fixed !important;

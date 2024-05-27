@@ -20,7 +20,7 @@
                                             <tr>
                                                 <td>{{this.category}}</td>
                                                 <td><img class="max-w-20" src="/uploads/{{this.image}}" alt=""></td>
-                                                <td><button  onclick="sure('{{this._id}}')" class="bg-blue-500 rounded-lg text-white font-semibold p-2 hover:bg-blue-300 duration-300">Edit</button></td>
+                                                <td><a  href="/admin/edit-category/{{this._id}}" class="bg-blue-500 rounded-lg text-white font-semibold p-2 hover:bg-blue-300 duration-300">Edit</a></td>
                                                 <td><button  onclick="sure('{{this._id}}')" class="bg-red-500 rounded-lg text-white font-semibold p-2 hover:bg-red-300 duration-300">Delete</button></td>
                                             </tr>
                                              {{/each}}
