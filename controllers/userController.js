@@ -388,14 +388,14 @@ module.exports = {
   searchFunction:async(req,res)=>{
     try{
     const query = req.body.search
-    const products = await productModel.find({});
+    const products = await productModel.find({}).lean()
     const searchableFields = ['name', 'brand', 'category'];
     
     const filteredProducts = search(query, products, {
       keySelector: (product) => searchableFields.map(field => product[field]).join(' '),
       // threshold: -10000, // Adjust this value to control the fuzziness level
-    });
-    console.log(filteredProducts.length)
+    })
+    console.log(filteredProducts)
     const categories = await categoryModel.find({}).lean();
       const popularProducts = await productModel
         .aggregate([{ $sample: { size: 4 } }])
