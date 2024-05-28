@@ -57,10 +57,12 @@
                                 </div><!-- /col -->
                                 <div class="col-xl-3 col-lg-3 col-md-8 col-sm-5 col-4">
                                         <div class="header-right d-flex justify-content-end align-items-center">
-                                            {{!-- <div class="header-search header-search-2 position-relative d-none d-xl-block" data-toggle="tooltip" data-selector="true" data-placement="bottom" title="Search">
-                                                <input type="text" placeholder="Search" class="border-0 pl-25 theme-color">
-                                                <span class="position-absolute black-color"><span><i class="far fa-search"></i></span></span>
-                                            </div> --}}
+                                            <form method="post" action="/search" class="header-search header-search-2 position-relative d-none d-xl-block" data-toggle="tooltip" data-selector="true" data-placement="bottom" title="Search">
+                                                <input name="search" type="text" placeholder="Search" class="border-0 pl-25 theme-color">
+                                                <button type="submit" class="position-absolute" style="border: 0; margin: 0;">
+                                                    <span class=" black-color"><span><i class="far fa-search"></i></span></span>
+                                                    </button>
+                                            </form>
                                             <ul>
                                                 <li class="h-shop position-relative ml-30">
                                                   <a href="/cart">

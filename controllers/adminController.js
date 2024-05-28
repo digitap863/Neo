@@ -215,8 +215,8 @@ module.exports = {
   },
   getOfferBanner: async (req, res) => {
     try {
-      const offerBanners = await bannerModel.find({}).lean()
-      res.render("admin/OfferBanner", { admin: true,offerBanners });
+      const banners = await bannerModel.find({}).lean()
+      res.render("admin/OfferBanner", { admin: true,banners });
     } catch (err) {
       res.render("error", { message: err });
     }

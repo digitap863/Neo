@@ -2,11 +2,13 @@ const { default: mongoose } = require("mongoose");
 // const blogs = require("../constants");
 const brandModel = require("../models/brandModel");
 const categoryModel = require("../models/categoryModel");
+const nodemailer = require("nodemailer");
 const productModel = require("../models/productModel");
 const orderModel = require("../models/orderModel");
 const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
 const { default: axios } = require("axios");
+const { search } = require("fast-fuzzy");
 const moment = require("moment-timezone");
 const branchModel = require("../models/branchesModel");
 
@@ -41,6 +43,7 @@ function sendTelegramAlert(order) {
 module.exports = {
   getHome: async (req, res) => {
     try {
+      
       const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
       const banners =latestBanner.images
       const brands = await brandModel.find({})
@@ -353,20 +356,22 @@ module.exports = {
   },
   submitContactForm:(req,res)=>{
     try {
-      const { name, email, phone, service, form } = req.body;
+      const { name, email, phone, subject, message } = req.body;
+      console.log(req.body)
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "joscoapp@gmail.com",
-          pass: "vpgaoocnbgdeigsu",
+          user: "neoproducts1@gmail.com",
+          pass: "tdhyjwbrtqgpreop",
         },
       });
       const mailOptions = {
         from: email,
-        to: "joscofacility2016@gmail.com",
-        subject:service,
+        to: "irshadshajahan020@gmail.com",
+        subject,
         text: `Hi
-        my name is ${name},My contact is ${phone}. I want to enquire about ${service}`,
+        my name is ${name},My contact is ${phone}. I want to enquire about ${subject}. 
+        Message: ${message}`,
       };
       transporter.sendMail(mailOptions,function(error,info){
         if(error){
@@ -374,19 +379,28 @@ module.exports = {
         }else{
           console.log("Email send: "+info.response)
         }
-        if(form==='home'){
-          res.redirect('/')
-          return
-        }
-        if(form==='service'){
-          res.redirect('/services')
-          return
-        }
-        if(form==='contact'){
           res.redirect('/contact')
-          return
-        }
       })
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  searchFunction:async(req,res)=>{
+    try{
+    const query = req.body.search
+    const products = await productModel.find({});
+    const searchableFields = ['name', 'brand', 'category'];
+    
+    const filteredProducts = search(query, products, {
+      keySelector: (product) => searchableFields.map(field => product[field]).join(' '),
+      // threshold: -10000, // Adjust this value to control the fuzziness level
+    });
+    console.log(filteredProducts.length)
+    const categories = await categoryModel.find({}).lean();
+      const popularProducts = await productModel
+        .aggregate([{ $sample: { size: 4 } }])
+        .exec();
+      res.render("user/shop", { products:filteredProducts, popularProducts, categories });
     }catch(err){
       res.render("error", { message: err });
     }

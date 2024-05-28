@@ -992,7 +992,7 @@ input:focus-visible {
 	background: #f5f5f5;
 }
 
-.header-search span {
+.header-search span,.header-search button {
 	right: 24px;
 	font-size: 18px;
 	top: 14px;
@@ -1769,7 +1769,7 @@ height: 21rem;
 }
 
 .category-image img{
-	height: 22rem;
+	height: 10rem;
 	width: 100%;
 	object-fit: cover;
 	border-radius: 10px;
