@@ -11,6 +11,7 @@ const { default: axios } = require("axios");
 const { search } = require("fast-fuzzy");
 const moment = require("moment-timezone");
 const branchModel = require("../models/branchesModel");
+const youtubeModel = require("../models/youtubeModel");
 
 function sendTelegramAlert(order) {
   console.log('entered telegram')
@@ -43,8 +44,7 @@ function sendTelegramAlert(order) {
 module.exports = {
   getHome: async (req, res) => {
     try {
-      
-      const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
+     const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
       const banners =latestBanner.images
       const brands = await brandModel.find({})
       const categories = await categoryModel.find({}).lean();
@@ -340,16 +340,18 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
-  getOrderSuccess:(req,res)=>{ 
+  getOrderSuccess:async(req,res)=>{ 
     try{
       res.render("user/order-success");
     }catch(err){
       res.render("error", { message: err });
     }
   },
-  getFranchise:(req,res)=>{
+  getFranchise:async(req,res)=>{
     try{
-      res.render("user/franchise");
+      const youtube = await youtubeModel.find().sort({ createdAt: -1 }).lean()
+      console.log(youtube)
+      res.render("user/franchise",{youtube:youtube[0]});
     }catch(err){
       res.render("error", { message: err });
     }

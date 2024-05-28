@@ -7,6 +7,7 @@ const productModel = require("../models/productModel");
 const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
 const branchModel = require("../models/branchesModel");
+const youtubeModel = require("../models/youtubeModel");
 const admin = {
   email:'neo@admin.com',
   password:'neo@admin'
@@ -376,5 +377,35 @@ module.exports = {
     }catch(err){
       res.render("error", { message: err });
     } 
-   }
+  },
+  getYoutubeAdd:async(req,res)=>{
+    try{
+      const youtube = await youtubeModel.find({}).lean();
+      res.render("admin/youtubeLink", { admin: true, youtube });
+    }catch(err){
+      res.render("error", { message: err });
+    }
+   },
+   addYoutube: async (req, res) => {
+    try {
+      console.log(req.body)
+      const { link } = req.body;
+      const image = req.files[0].filename;
+      const newYoutube = new youtubeModel({ link, image });
+      await newYoutube.save();
+      res.redirect("/admin/add-youtube");
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  deleteYoutube:(req,res)=>{
+    try{
+      const id = req.params.id
+      youtubeModel.findByIdAndDelete(id).then((response) => {
+        res.json({});
+      });
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  }
 };
