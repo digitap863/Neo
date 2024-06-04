@@ -47,7 +47,6 @@ module.exports = {
      const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
       const banners =latestBanner?.images
       const brands = await brandModel.find({}).lean()
-      console.log(brands)
       const categories = await categoryModel.find({}).lean();
       const blogs = await blogModel.find({}).lean();
       const popularProducts = await productModel

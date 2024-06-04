@@ -372,25 +372,25 @@ $('.product-items-active').slick({
     arrows: false,
     infinite: true,
     // autoplay:true,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
         {
             breakpoint: 1200,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 3,
             }
         },
         {
             breakpoint:991,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
             }
         },
         {
             breakpoint: 575,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
             }
         },
         {
