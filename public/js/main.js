@@ -371,7 +371,7 @@ $('.product-items-active').slick({
     dots: false,
     arrows: false,
     infinite: true,
-    // autoplay:true,
+    autoplay:true,
     slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
