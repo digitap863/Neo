@@ -4,12 +4,14 @@ const path = require("path");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/uploads");
+    cb(null, './public/uploads');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    var sanitizedFilename = file.originalname.replace(/\s+/g, '-');
+    cb(null, Date.now() + '-' + sanitizedFilename);
   },
 });
+
 var upload = multer({ storage: storage });
 
 function deleteImage(imageName) {
