@@ -38,6 +38,7 @@
   <div class="cart-area mt-100">
     <div class="container border-b-light-gray pb-100">
       <div class="cart-table text-center table-responsive-sm">
+        <span class="stockError" style="color: red;"></span>
         <table class="table table-bordered" id="cartDiv">
           <thead>
             <tr>
@@ -198,6 +199,11 @@ async function updateQuantity(quantityInput) {
     });
 
     const data = await response.json();
+    if(!data.status){
+      location.reload()
+      const stockError =  document.querySelector('.stockError')
+       subTotal.textContent = 'Selected quantity not available'
+          }
 
     if (data.remove) {
       location.reload()

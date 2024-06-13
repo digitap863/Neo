@@ -78,6 +78,9 @@
                                             <div class="p-info-text pr-55">
                                                 <p class="gray-color2">{{product.description}}</p>
                                             </div>
+                                            <div class="price pb-18 pt-3">
+                                                <span class="rc-price font700">{{err}}</span>
+                                            </div>
                                             <div class="all-info d-sm-flex align-items-center mt-35">
                                                 <form method="post" action="/add-to-cart" class="quick-add-to-cart d-sm-flex align-items-center">
                                                     <div class="quantity-field position-relative d-inline-block mt-15 mr-3">
@@ -85,7 +88,7 @@
                                                         <input type="text" name="quantity" value="1" class="quantity-input-arrow quantity-input shop-border2 dark-black-color text-center"> 
                                                     </div>
                                                     <div class="quick-add-to-cart d-sm-flex align-items-center mr-15 mt-15">
-                                                        <button type="submit" class="web-btn d-inline-block theme-bg border-theme02 white text-uppercase over-hidden position-relative ptb-19 pl-30 pr-30 rounded-0">add to CART 
+                                                        <button {{#if outOfStock}}disabled{{/if}} type="submit" class="web-btn d-inline-block theme-bg border-theme02 white text-uppercase over-hidden position-relative ptb-19 pl-30 pr-30 rounded-0">add to CART 
                                                             <span class="ml-1"><span class="icon-plus"></span></span>
                                                         </button>
                                                     </div>

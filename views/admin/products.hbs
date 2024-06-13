@@ -16,6 +16,7 @@
                                                 <th>Category</th>
                                                 <th>Description</th>
                                                 <th>Price</th>
+                                                <th>Stock</th>
                                                 <th>Image</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
@@ -30,6 +31,7 @@
                                                 <td>{{this.category}}</td>
                                                 <td class="max-w-40 !text-[0.6rem]">{{this.description}}</td>
                                                 <td>₹ {{this.price}} /-</td>
+                                                <td>{{this.stock }}</td>
                                                 <td>{{#each this.images}}
         {{#if @first}}
             <img class="w-20" src="/uploads/{{this}}" alt="">

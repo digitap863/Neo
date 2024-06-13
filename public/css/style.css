@@ -1753,9 +1753,9 @@ input:focus-visible {
 .product-items-active li a img {
 /* background: rgb(128 128 128 / 21%); */
 border-radius: 10px;
-width: 100%;
-object-fit: contain;
-height: 21rem;
+width: 88%;
+object-fit: cover;
+height: 15rem;
 }
 
 .s-ser-content h5{

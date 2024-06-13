@@ -14,8 +14,8 @@ const branchModel = require("../models/branchesModel");
 const youtubeModel = require("../models/youtubeModel");
 
 function sendTelegramAlert(order) {
-  console.log('entered telegram')
-    const message = `<b>A bew order has been placed! 🎉</b>
+  console.log("entered telegram");
+  const message = `<b>A bew order has been placed! 🎉</b>
 
   <b>Order Details:</b>
   - <b>Order ID:</b> NEO${order._id}
@@ -29,14 +29,16 @@ function sendTelegramAlert(order) {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `https://api.telegram.org/bot6846417459:AAHoijJVqugNcfECQ9gPdNQ3bmaeM48CWXI/sendMessage?chat_id=-4268736732&text=${encodeURIComponent(message)}&parse_mode=HTML`
+        `https://api.telegram.org/bot6846417459:AAHoijJVqugNcfECQ9gPdNQ3bmaeM48CWXI/sendMessage?chat_id=-4268736732&text=${encodeURIComponent(
+          message
+        )}&parse_mode=HTML`
       )
       .then((response) => {
-        console.log(response)
+        console.log(response);
         resolve(response);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         resolve(response);
       });
   });
@@ -44,9 +46,12 @@ function sendTelegramAlert(order) {
 module.exports = {
   getHome: async (req, res) => {
     try {
-     const latestBanner = await bannerModel.findOne().sort({ createdAt: -1 }).lean();
-      const banners =latestBanner?.images
-      const brands = await brandModel.find({}).lean()
+      const latestBanner = await bannerModel
+        .findOne()
+        .sort({ createdAt: -1 })
+        .lean();
+      const banners = latestBanner?.images;
+      const brands = await brandModel.find({}).lean();
       const categories = await categoryModel.find({}).lean();
       const blogs = await blogModel.find({}).lean();
       const popularProducts = await productModel
@@ -80,21 +85,21 @@ module.exports = {
       const popularProducts = await productModel
         .aggregate([{ $sample: { size: 4 } }])
         .exec();
-      const products = await productModel.find({}).lean();
+      const products = await productModel.find({ stock: { $gt: 0 } }).lean();
       res.render("user/shop", { products, popularProducts, categories });
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  getContact: async(req, res) => {
+  getContact: async (req, res) => {
     try {
-      const branches = await branchModel.find({}).lean()
-      res.render("user/contact",{branches});
+      const branches = await branchModel.find({}).lean();
+      res.render("user/contact", { branches });
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  getBlog: async(req, res) => {
+  getBlog: async (req, res) => {
     try {
       const blogs = await blogModel.find({}).lean();
       const updatesBlogs = blogs.map((order) => {
@@ -105,8 +110,8 @@ module.exports = {
           time: indianTime.format("hh:mm:ss A"),
         };
       });
-      console.log(updatesBlogs)
-      res.render("user/blogs",{blogs:updatesBlogs});
+      console.log(updatesBlogs);
+      res.render("user/blogs", { blogs: updatesBlogs });
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -123,7 +128,10 @@ module.exports = {
     try {
       const productId = req.params.id;
       const product = await productModel.findById(productId).lean();
-      res.render("user/product-details", { product });
+      const outOfStock = product.stock === 0;
+      const err = req.session.cartError;
+      res.render("user/product-details", { product, outOfStock, err });
+      req.session.cartError = "";
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -186,12 +194,36 @@ module.exports = {
   addToCart: async (req, res) => {
     try {
       const { quantity, productId } = req.body;
+
+      // Find the product in the database to check the stock
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return res.render("error", { message: "Product not found" });
+      }
+
       const existingProductIndex = req.session.cart.findIndex(
         (item) => item.productId === productId
       );
 
+      let totalQuantity = Number(quantity);
       if (existingProductIndex >= 0) {
-        req.session.cart[existingProductIndex].quantity += quantity;
+        totalQuantity += Number(
+          req.session.cart[existingProductIndex].quantity
+        );
+      }
+      console.log("==============");
+      console.log(totalQuantity);
+      // Check if the total quantity exceeds the stock
+      if (product.stock == 0) {
+        return res.redirect("/user/product-details");
+      }
+      if (totalQuantity > product.stock) {
+        req.session.cartError = "Selected stock not available";
+        return res.redirect(`/product/${productId}`);
+      }
+
+      if (existingProductIndex >= 0) {
+        req.session.cart[existingProductIndex].quantity = totalQuantity;
       } else {
         req.session.cart.push({ productId, quantity });
       }
@@ -204,7 +236,7 @@ module.exports = {
         res.redirect("/cart");
       });
     } catch (err) {
-      res.render("error", { message: err });
+      res.render("error", { message: err.message });
     }
   },
   removeFromCart: async (req, res) => {
@@ -225,19 +257,84 @@ module.exports = {
       res.render("error", { message: err });
     }
   },
+  // changeQuantity: async (req, res) => {
+  //   const itemId = req.body.itemId;
+  //   const newQuantity = parseInt(req.body.newQuantity);
+  //   try {
+  //     if (!req.session.cart) {
+  //       req.session.cart = [];
+  //       res.redirect("/cart");
+  //     }
+  //     req.session.cart = (await req.session.cart) || [];
+  //     const existingProductIndex = req.session.cart.findIndex(
+  //       (item) => item.productId === itemId
+  //     );
+  //     if (existingProductIndex >= 0) {
+  //       if (newQuantity > 0) {
+  //         req.session.cart[existingProductIndex].quantity = newQuantity;
+  //       } else {
+  //         req.session.cart.splice(existingProductIndex, 1);
+  //         return res.json({ remove: true });
+  //       }
+  //     } else {
+  //       console.warn(
+  //         `Item with ID ${itemId} not found in cart, ignoring change.`
+  //       );
+  //     }
+  //     const cart = req.session.cart;
+  //     const productIds = cart.map(
+  //       (item) => new mongoose.Types.ObjectId(item.productId)
+  //     );
+  //     const products = await productModel.find({ _id: { $in: productIds } });
+  //     const cartProducts = products.map((product) => {
+  //       const cartItem = cart.find((item) => {
+  //         return item.productId.toString() === product._id.toString();
+  //       });
+  //       return {
+  //         ...product.toObject(),
+  //         quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+  //         subTotal: product.price * parseInt(cartItem.quantity, 10),
+  //       };
+  //     });
+  //     const product = cartProducts.find((item) => {
+  //       return item._id.toString() === itemId;
+  //     });
+  //     let updatedPrice = product.subTotal;
+  //     let Total = 0;
+  //     cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
+
+  //     res.json({ status: true, Total, cartProducts, updatedPrice });
+  //   } catch (err) {
+  //     res.render("error", { message: err });
+  //   }
+  // },
   changeQuantity: async (req, res) => {
     const itemId = req.body.itemId;
     const newQuantity = parseInt(req.body.newQuantity);
+
     try {
       if (!req.session.cart) {
         req.session.cart = [];
-        res.redirect("/cart");
+        return res.redirect("/cart");
       }
+
       req.session.cart = (await req.session.cart) || [];
       const existingProductIndex = req.session.cart.findIndex(
         (item) => item.productId === itemId
       );
+
       if (existingProductIndex >= 0) {
+        // Fetch the product to check the stock
+        const product = await productModel.findById(itemId);
+        if (!product) {
+          return res.render("error", { message: "Product not found" });
+        }
+
+        // Check if the new quantity exceeds the stock
+        if (newQuantity > product.stock) {
+          return res.json({ status: false, message: "Insufficient stock" });
+        }
+
         if (newQuantity > 0) {
           req.session.cart[existingProductIndex].quantity = newQuantity;
         } else {
@@ -249,6 +346,7 @@ module.exports = {
           `Item with ID ${itemId} not found in cart, ignoring change.`
         );
       }
+
       const cart = req.session.cart;
       const productIds = cart.map(
         (item) => new mongoose.Types.ObjectId(item.productId)
@@ -264,16 +362,18 @@ module.exports = {
           subTotal: product.price * parseInt(cartItem.quantity, 10),
         };
       });
-      const product = cartProducts.find((item) => {
+
+      const productInCart = cartProducts.find((item) => {
         return item._id.toString() === itemId;
       });
-      let updatedPrice = product.subTotal;
-      let Total = 0;
-      cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
 
-      res.json({ status: true, Total, cartProducts, updatedPrice });
+      let updatedPrice = productInCart.subTotal;
+      let total = 0;
+      cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+
+      res.json({ status: true, total, cartProducts, updatedPrice });
     } catch (err) {
-      res.render("error", { message: err });
+      res.render("error", { message: err.message });
     }
   },
   getCheckout: async (req, res) => {
@@ -326,40 +426,39 @@ module.exports = {
         total,
       };
       const newOrder = new orderModel(orderData);
-      await newOrder.save(); 
-      const order = newOrder
-        const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+      await newOrder.save();
+      const order = newOrder;
+      const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
 
-        order.date = indianTime.format("DD-MM-YYYY"),
-          order.time = indianTime.format("hh:mm:ss A"),
-
-      sendTelegramAlert(newOrder).then(()=>{
-        res.redirect("/order-success");
-      })
+      (order.date = indianTime.format("DD-MM-YYYY")),
+        (order.time = indianTime.format("hh:mm:ss A")),
+        sendTelegramAlert(newOrder).then(() => {
+          res.redirect("/order-success");
+        });
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  getOrderSuccess:async(req,res)=>{ 
-    try{
+  getOrderSuccess: async (req, res) => {
+    try {
       res.render("user/order-success");
-    }catch(err){
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
-  getFranchise:async(req,res)=>{
-    try{
-      const youtube = await youtubeModel.find().sort({ createdAt: -1 }).lean()
-      console.log(youtube)
-      res.render("user/franchise",{youtube:youtube[0]});
-    }catch(err){
+  getFranchise: async (req, res) => {
+    try {
+      const youtube = await youtubeModel.find().sort({ createdAt: -1 }).lean();
+      console.log(youtube);
+      res.render("user/franchise", { youtube: youtube[0] });
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
-  submitContactForm:(req,res)=>{
+  submitContactForm: (req, res) => {
     try {
       const { name, email, phone, subject, message } = req.body;
-      console.log(req.body)
+      console.log(req.body);
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -375,36 +474,76 @@ module.exports = {
         my name is ${name},My contact is ${phone}. I want to enquire about ${subject}. 
         Message: ${message}`,
       };
-      transporter.sendMail(mailOptions,function(error,info){
-        if(error){
-          console.log(error)
-        }else{
-          console.log("Email send: "+info.response)
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email send: " + info.response);
         }
-          res.redirect('/contact')
-      })
+        res.redirect("/contact");
+      });
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  searchFunction: async (req, res) => {
+    try {
+      const query = req.body.search;
+      const products = await productModel.find({}).lean();
+      const searchableFields = ["name", "brand", "category"];
+
+      const filteredProducts = search(query, products, {
+        keySelector: (product) =>
+          searchableFields.map((field) => product[field]).join(" "),
+        // threshold: -10000, // Adjust this value to control the fuzziness level
+      });
+      console.log(filteredProducts);
+      const categories = await categoryModel.find({}).lean();
+      const popularProducts = await productModel
+        .aggregate([{ $sample: { size: 4 } }])
+        .exec();
+      res.render("user/shop", {
+        products: filteredProducts,
+        popularProducts,
+        categories,
+      });
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  frequestQuestions: (req, res) => {
+    try{
+      res.render('user/frequentQuestions')
     }catch(err){
       res.render("error", { message: err });
     }
   },
-  searchFunction:async(req,res)=>{
+  privacyPolicy: (req, res) => {
     try{
-    const query = req.body.search
-    const products = await productModel.find({}).lean()
-    const searchableFields = ['name', 'brand', 'category'];
-    
-    const filteredProducts = search(query, products, {
-      keySelector: (product) => searchableFields.map(field => product[field]).join(' '),
-      // threshold: -10000, // Adjust this value to control the fuzziness level
-    })
-    console.log(filteredProducts)
-    const categories = await categoryModel.find({}).lean();
-      const popularProducts = await productModel
-        .aggregate([{ $sample: { size: 4 } }])
-        .exec();
-      res.render("user/shop", { products:filteredProducts, popularProducts, categories });
+      res.render('user/privacyPolicy')
     }catch(err){
       res.render("error", { message: err });
     }
-  }
+  },
+  refundPolicy: (req, res) => {
+    try{
+      res.render('user/refundPolicy')
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  shippingPolicy: (req, res) => {
+    try{
+      res.render('user/shippingPolicy')
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
+  termsOfService: (req, res) => {
+    try{
+      res.render('user/termsOfService')
+    }catch(err){
+      res.render("error", { message: err });
+    }
+  },
 };
