@@ -12,6 +12,8 @@ const { search } = require("fast-fuzzy");
 const moment = require("moment-timezone");
 const branchModel = require("../models/branchesModel");
 const youtubeModel = require("../models/youtubeModel");
+const { Juspay, APIError } = require("expresscheckout-nodejs");
+const juspay = require("../helper/paymentHelper");
 
 function sendTelegramAlert(order) {
   console.log("entered telegram");
@@ -393,9 +395,17 @@ module.exports = {
           subTotal: product.price * parseInt(cartItem.quantity, 10),
         };
       });
-      let Total = 0;
-      cartProducts.forEach((elem) => (Total += elem.price * elem.quantity));
-      res.render("user/checkout", { products: cartProducts, total: Total });
+      let total = 0;
+      cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+      const orderData = {
+        // ...data,
+        lineItems: cartProducts,
+        total,
+      };
+      const newOrder = new orderModel(orderData);
+      await newOrder.save();
+      req.session.order = newOrder;
+      res.render("user/checkout", { products: cartProducts, total });
     } catch (err) {
       res.render("error", { message: err });
     }
@@ -512,38 +522,182 @@ module.exports = {
     }
   },
   frequestQuestions: (req, res) => {
-    try{
-      res.render('user/frequentQuestions')
-    }catch(err){
+    try {
+      res.render("user/frequentQuestions");
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
   privacyPolicy: (req, res) => {
-    try{
-      res.render('user/privacyPolicy')
-    }catch(err){
+    try {
+      res.render("user/privacyPolicy");
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
   refundPolicy: (req, res) => {
-    try{
-      res.render('user/refundPolicy')
-    }catch(err){
+    try {
+      res.render("user/refundPolicy");
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
   shippingPolicy: (req, res) => {
-    try{
-      res.render('user/shippingPolicy')
-    }catch(err){
+    try {
+      res.render("user/shippingPolicy");
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
   termsOfService: (req, res) => {
-    try{
-      res.render('user/termsOfService')
-    }catch(err){
+    try {
+      res.render("user/termsOfService");
+    } catch (err) {
+      res.render("error", { message: err });
+    }
+  },
+  checkOutPayment: async (req, res) => {
+    const order = req.session.order;
+    const address = req.body;
+    const returnUrl = `http://localhost:3000/handleJuspayResponse`;
+    try {
+      let orderMain = await orderModel.findById(order._id);
+
+      // Update the properties of orderMain with those from address
+      Object.assign(orderMain, address);
+
+      // Save the updated orderMain document
+      await orderMain.save();
+      const sessionResponse = await juspay.orderSession.create({
+        order_id: "order_" + order._id,
+        amount: order.total,
+        payment_page_client_id: "hdfcmaster", // [required] shared with you, in config.json
+        customer_id: "hdfc-testing-customer-one", // [optional] your customer id here
+        action: "paymentPage", // [optional] default is paymentPage
+        return_url: returnUrl, // [optional] default is value given from dashboard
+        currency: "INR", // [optional] default is INR
+      });
+      return res.json(makeJuspayResponse(sessionResponse));
+    } catch (error) {
+      console.log("erorr block entered ==================");
+      console.log(error);
+      if (error instanceof APIError) {
+        // handle errors comming from juspay's api
+        return res.json(makeError(error.message));
+      }
+      return res.json(makeError());
+    }
+  },
+  JustPayResponse: async (req, res) => {
+    const orderId = req.body.order_id || req.body.orderId;
+    const order = await orderModel.findById(orderId.split("order_")[1]);
+    if (orderId == undefined) {
+      return res.json(makeError("order_id not present or cannot be empty"));
+    }
+
+    try {
+      const statusResponse = await juspay.order.status(orderId);
+      console.log("========================");
+      console.log(statusResponse);
+      const orderStatus = statusResponse.status;
+      // let message = "";
+      console.log(orderStatus);
+      // switch (orderStatus) {
+      //     case "CHARGED":
+      //         message = "order payment done successfully"
+      //         order.paymentStatus = 'Success'
+      //         await order.save()
+      //         (order.date = indianTime.format("DD-MM-YYYY")),
+      //         (order.time = indianTime.format("hh:mm:ss A")),
+      //         console.log('reached inside if block')
+      //         sendTelegramAlert(order).then(() => {
+      //           res.redirect("/order-success");
+      //         });
+      //         break
+      //     case "PENDING":
+      //     case "PENDING_VBV":
+      //         message = "order payment pending"
+      //         order.paymentStatus = 'Pending'
+      //         await order.save()
+      //         res.redirect("/order-failed");
+      //         break
+      //     case "AUTHORIZATION_FAILED":
+      //         message = "order payment authorization failed"
+      //         order.paymentStatus = 'Pending'
+      //         await order.save()
+      //         res.redirect("/order-failed");
+      //         break
+      //     case "AUTHENTICATION_FAILED":
+      //         message = "order payment authentication failed"
+      //         order.paymentStatus = 'Failed'
+      //         await order.save()
+      //         res.redirect("/order-failed");
+      //         break
+      //     default:
+      //         message = "order status " + orderStatus
+      //         break
+      // }
+      let message;
+      
+      if (orderStatus == 'CHARGED') {
+        message = "order payment done successfully";
+        console.log("reached inside if block");
+        order.paymentStatus = "Success";
+        await order.save();
+        const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+        order.date = indianTime.format("DD-MM-YYYY");
+        order.time = indianTime.format("hh:mm:ss A");
+        // res.redirect('/order-success')
+        sendTelegramAlert(order).then(() => {
+          res.redirect("/order-success");
+        });
+      } else if (orderStatus == "PENDING" || orderStatus == "PENDING_VBV") {
+        message = "order payment pending";
+        order.paymentStatus = "Pending";
+        await order.save();
+        res.redirect("/order-failed");
+      } else if (orderStatus == "AUTHORIZATION_FAILED") {
+        message = "order payment authorization failed";
+        order.paymentStatus = "Pending";
+        await order.save();
+        res.redirect("/order-failed");
+      } else if (orderStatus == "AUTHENTICATION_FAILED") {
+        message = "order payment authentication failed";
+        order.paymentStatus = "Failed";
+        await order.save();
+        res.redirect("/order-failed");
+      } else {
+        message = "order status " + orderStatus;
+      }
+
+      // removes http field from response, typically you won't send entire structure as response
+      // return res.send(makeJuspayResponse(statusResponse))
+    } catch (error) {
+      console.log(error)
+      if (error instanceof APIError) {
+        // handle errors comming from juspay's api,
+        return res.json(makeError(error.message));
+      }
+      // return res.json(makeError())
+    }
+  },
+  getOrderFailed: (req, res) => {
+    try {
+      res.render("user/order-failed");
+    } catch (err) {
       res.render("error", { message: err });
     }
   },
 };
+
+function makeError(message) {
+  return {
+    message: message || "Something went wrong",
+  };
+}
+
+function makeJuspayResponse(successRspFromJuspay) {
+  if (successRspFromJuspay == undefined) return successRspFromJuspay;
+  if (successRspFromJuspay.http != undefined) delete successRspFromJuspay.http;
+  return successRspFromJuspay;
+}

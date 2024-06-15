@@ -14,7 +14,9 @@ const orderSchema = new mongoose.Schema({
     type:Boolean,
     default:false
   },
-  total:Number
+  total:Number,
+  orderId:String,
+  paymentStatus:String
 },
 {   
   timestamps:true

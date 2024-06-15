@@ -3643,18 +3643,39 @@ html .ui-button.ui-state-disabled:active {
 	flex-direction: column;
 	position: relative;
 }
+.failed-container{
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	position: relative;
+}
 
 .success-container img{
-		width: 33%;
+	width: 33%;
+}
+
+.failed-container img{
+		width: 25%;
 }
 .success-container .success-order-button{
+	margin-top: 1rem;
+}
+.failed-container .success-order-button{
 	margin-top: 1rem;
 }
 .success-container h3{
 	font-weight: 600;
 }
+.failed-container h3{
+	font-weight: 600;
+}
 .success-container h3 span{
 	color: rgb(5, 202, 5);
+}
+.failed-container h3 span{
+	color: rgb(202, 5, 5);
 }
 .franchise{
 	display: flex;

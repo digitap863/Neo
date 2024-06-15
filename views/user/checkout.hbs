@@ -85,7 +85,7 @@
             <!-- ====== checkout-area-start ============================================= -->
             <div class="checkout-area mb-60 mt-20">
                 <div  class="container">
-                    <form method="post" action="/checkout" class="row">
+                    <form id="checkoutForm" method="post" action="/checkout" class="row">
                         <div class="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12">
                             <div class="checkbox-form">
                                 <h4 class="pb-10 mb-20 border-b-light-gray3">Billing Details</h4>
@@ -231,3 +231,30 @@
             <!-- checkout-area-end -->
 
         </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkoutForm = document.getElementById('checkoutForm');
+    checkoutForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Create FormData instance and append form data
+        let formData = new FormData(checkoutForm);
+        console.log(formData)
+        $.ajax({
+            url: '/checkout',
+            method: 'post',
+            data: $('#checkoutForm').serialize(),
+            success: function(response) {
+                console.log(response);
+                // Assuming the response contains a property `payment_links` with a `web` sub-property
+                window.location.href = response.payment_links.web;
+            },
+            error: function(err) {
+                console.error("AJAX Error:", err);
+                // Handle errors here
+            }
+        });
+    });
+});
+</script>
