@@ -14,9 +14,9 @@ const branchModel = require("../models/branchesModel");
 const youtubeModel = require("../models/youtubeModel");
 const { Juspay, APIError } = require("expresscheckout-nodejs");
 const juspay = require("../helper/paymentHelper");
+const { createShipRocketOrder } = require("../helper/shipRocket");
 
 function sendTelegramAlert(order) {
-  console.log("entered telegram");
   const message = `<b>A bew order has been placed! 🎉</b>
 
   <b>Order Details:</b>
@@ -36,11 +36,9 @@ function sendTelegramAlert(order) {
         )}&parse_mode=HTML`
       )
       .then((response) => {
-        console.log(response);
         resolve(response);
       })
       .catch((err) => {
-        console.log(err);
         resolve(response);
       });
   });
@@ -597,58 +595,19 @@ module.exports = {
 
     try {
       const statusResponse = await juspay.order.status(orderId);
-      console.log("========================");
-      console.log(statusResponse);
       const orderStatus = statusResponse.status;
-      // let message = "";
-      console.log(orderStatus);
-      // switch (orderStatus) {
-      //     case "CHARGED":
-      //         message = "order payment done successfully"
-      //         order.paymentStatus = 'Success'
-      //         await order.save()
-      //         (order.date = indianTime.format("DD-MM-YYYY")),
-      //         (order.time = indianTime.format("hh:mm:ss A")),
-      //         console.log('reached inside if block')
-      //         sendTelegramAlert(order).then(() => {
-      //           res.redirect("/order-success");
-      //         });
-      //         break
-      //     case "PENDING":
-      //     case "PENDING_VBV":
-      //         message = "order payment pending"
-      //         order.paymentStatus = 'Pending'
-      //         await order.save()
-      //         res.redirect("/order-failed");
-      //         break
-      //     case "AUTHORIZATION_FAILED":
-      //         message = "order payment authorization failed"
-      //         order.paymentStatus = 'Pending'
-      //         await order.save()
-      //         res.redirect("/order-failed");
-      //         break
-      //     case "AUTHENTICATION_FAILED":
-      //         message = "order payment authentication failed"
-      //         order.paymentStatus = 'Failed'
-      //         await order.save()
-      //         res.redirect("/order-failed");
-      //         break
-      //     default:
-      //         message = "order status " + orderStatus
-      //         break
-      // }
       let message;
       
       if (orderStatus == 'CHARGED') {
         message = "order payment done successfully";
-        console.log("reached inside if block");
-        order.paymentStatus = "Success";
+        order.paymentStatus = "Success";  
         await order.save();
         const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
         order.date = indianTime.format("DD-MM-YYYY");
         order.time = indianTime.format("hh:mm:ss A");
-        // res.redirect('/order-success')
         sendTelegramAlert(order).then(() => {
+          createShipRocketOrder(order).then((res)=>{  
+          })
           res.redirect("/order-success");
         });
       } else if (orderStatus == "PENDING" || orderStatus == "PENDING_VBV") {
