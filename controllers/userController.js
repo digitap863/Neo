@@ -557,7 +557,7 @@ module.exports = {
   checkOutPayment: async (req, res) => {
     const order = req.session.order;
     const address = req.body;
-    const returnUrl = `http://localhost:3000/handleJuspayResponse`;
+    const returnUrl = process.env.DEV?'http://localhost:3000/handleJuspayResponse':'http://43.205.206.37/handleJuspayResponse';
     try {
       let orderMain = await orderModel.findById(order._id);
 

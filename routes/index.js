@@ -1,8 +1,5 @@
 var express = require('express');
 const { getHome, getAbout, getContact, getShop, getBlog, getCategories, getCategoryProducts, getBrandProducts, getProductDetails, getCart, addToCart, removeFromCart, changeQuantity, getCheckout, postCheckout, getOrderSuccess, getFranchise, submitContactForm, searchFunction, frequestQuestions, privacyPolicy, refundPolicy, shippingPolicy, termsOfService, checkOutPayment, JustPayResponse, getOrderFailed } = require('../controllers/userController');
-const generateSignature = require('../helper/paymentHelper');
-const { createShipRocketOrder } = require('../helper/shipRocket');
-const orderModel = require('../models/orderModel');
 var router = express.Router();
 
 /* GET home page. */
@@ -37,10 +34,14 @@ router.post('/checkout',checkOutPayment)
 router.post('/handleJuspayResponse', JustPayResponse)
 
 router.get('/test',async(req,res)=>{
-    const order = await orderModel.findOne()
-    createShipRocketOrder(order)
+    console.log(process.env.DEV)
+    if(process.env.DEV){
+        console.log('ind')
+    }else{
+        console.log('illa')
+    }
 })
 
 
 module.exports = router;
-    
+     
