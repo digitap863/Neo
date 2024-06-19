@@ -587,6 +587,7 @@ module.exports = {
     }
   },
   JustPayResponse: async (req, res) => {
+    console.log(req.body)
     const orderId = req.body.order_id || req.body.orderId;
     const order = await orderModel.findById(orderId.split("order_")[1]);
     if (orderId == undefined) {
@@ -608,7 +609,7 @@ module.exports = {
         sendTelegramAlert(order).then(() => {
           createShipRocketOrder(order).then((res)=>{  
           })
-          res.redirect("/order-success");
+          res.render("user/order-success",{orderId,amount:order.total});
         });
       } else if (orderStatus == "PENDING" || orderStatus == "PENDING_VBV") {
         message = "order payment pending";
