@@ -577,8 +577,6 @@ module.exports = {
       });
       return res.json(makeJuspayResponse(sessionResponse));
     } catch (error) {
-      console.log("erorr block entered ==================");
-      console.log(error);
       if (error instanceof APIError) {
         // handle errors comming from juspay's api
         return res.json(makeError(error.message));
@@ -588,6 +586,11 @@ module.exports = {
   },
   JustPayResponse: async (req, res) => {
     console.log(req.body)
+    console.log(req.body.status_id)
+    console.log(req.body.status_id=='10')
+    if(req.body.status_id=='10'){
+      return res.redirect("/order-failed");
+    }
     const orderId = req.body.order_id || req.body.orderId;
     const order = await orderModel.findById(orderId.split("order_")[1]);
     if (orderId == undefined) {
