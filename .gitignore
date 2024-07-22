@@ -3,3 +3,4 @@ template
 admin-template
 node_modules/
 .env
+sessions
