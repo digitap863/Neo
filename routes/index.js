@@ -38,7 +38,7 @@ router.post('/test',async(req,res)=>{
     const apiKey = '74F6392C77C46299CB1EC7702F1409'; // Replace with your actual API Key
     const merchantId = 'hdfcmaster'; // Replace with your actual Merchant ID
     const customerId = 'hdfc-testing-customer-one'; // Replace with your actual Customer ID
-    const orderId = 'order_66727ffc36e78161fc4510cd'
+    const orderId = 'order_667a8d006b8577f9bde4b803'
   
     const url = `https://smartgatewayuat.hdfcbank.com/orders/${orderId}`; // Use the sandbox URL for testing
   
@@ -59,29 +59,6 @@ router.post('/test',async(req,res)=>{
       console.error(`Error fetching order status: ${error}`);
       throw error;
     }
-
-
-    const postData = {
-        usernam
-      };
-      
-    //   const config = {
-    //     headers: {
-    //       'Authorization': 'Basic base_64_encoded_api_key==74F6392C77C46299CB1EC7702F1409',
-    //       'version': '2023-06-30',
-    //       'Content-Type': 'application/x-www-form-urlencoded',
-    //       'x-merchantid': 'hdfcmaster',
-    //       'x-customerid': 'hdfc-testing-customer-one'
-    //     }
-    //   };
-      
-    //   axios.post('https://smartgatewayuat.hdfcbank.com/orders/order_66727ffc36e78161fc4510cd', postData, config)
-    //    .then((response) => {
-    //       console.log(response.data);
-    //     })
-    //    .catch((error) => {
-    //       console.error(error);
-    //     });
 })
 
 

@@ -42,7 +42,7 @@ const privateKey = fs.readFileSync(config.PRIVATE_KEY_PATH, 'utf8');
 
 const juspay = new Juspay({
     merchantId: config.MERCHANT_ID,
-    baseUrl: SANDBOX_BASE_URL,
+    baseUrl: PRODUCTION_BASE_URL,
     jweAuth: {
         keyId: config.KEY_UUID,
         publicKey,

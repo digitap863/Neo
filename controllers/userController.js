@@ -211,8 +211,6 @@ module.exports = {
           req.session.cart[existingProductIndex].quantity
         );
       }
-      console.log("==============");
-      console.log(totalQuantity);
       // Check if the total quantity exceeds the stock
       if (product.stock == 0) {
         return res.redirect("/user/product-details");
@@ -585,9 +583,6 @@ module.exports = {
     }
   },
   JustPayResponse: async (req, res) => {
-    console.log(req.body)
-    console.log(req.body.status_id)
-    console.log(req.body.status_id=='10')
     if(req.body.status_id=='10'){
       return res.redirect("/order-failed");
     }
@@ -612,6 +607,7 @@ module.exports = {
         sendTelegramAlert(order).then(() => {
           createShipRocketOrder(order).then((res)=>{  
           })
+          req.session.cart = []
           res.render("user/order-success",{orderId,amount:order.total});
         });
       } else if (orderStatus == "PENDING" || orderStatus == "PENDING_VBV") {
