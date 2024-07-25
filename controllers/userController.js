@@ -377,6 +377,12 @@ module.exports = {
   getCheckout: async (req, res) => {
     try {
       const cart = await req.session.cart;
+      const KeralaBase = 80
+      const OutsideBase = 130
+      const keralaAdditional = 30 
+      const outsideAdditional = 40
+      let shippingCostKerala = 0
+      let shippingCostOutside = 0
       const productIds = cart.map(
         (item) => new mongoose.Types.ObjectId(item.productId)
       );
@@ -391,62 +397,83 @@ module.exports = {
           subTotal: product.price * parseInt(cartItem.quantity, 10),
         };
       });
-      let total = 0;
-      cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+      let subTotal = 0;
+      cartProducts.forEach((elem) => (subTotal += elem.price * elem.quantity));
+      let totalWeight = 0
+      cartProducts.forEach((elem) => (totalWeight += elem.weight * elem.quantity));
+      //  totalWeight = 1100
+      if (totalWeight <= 500) {
+        shippingCostKerala = KeralaBase
+        shippingCostOutside = OutsideBase
+      } else {
+        const additionalWeight = Math.ceil((totalWeight - 500) / 500)
+        shippingCostKerala = KeralaBase + (additionalWeight * keralaAdditional)
+        shippingCostOutside = OutsideBase + (additionalWeight * outsideAdditional)
+      }
+      
+      console.log("Shipping Cost for Kerala:", shippingCostKerala)
+      console.log("Shipping Cost for Outside Kerala:", shippingCostOutside)
+      console.log('total: ',totalWeight)
       const orderData = {
         // ...data,
         lineItems: cartProducts,
-        total,
+        subTotal,
+        total:subTotal,
+        totalWeight,
+        shippingCostOutside,
+        shippingCostKerala
       };
       const newOrder = new orderModel(orderData);
       await newOrder.save();
       req.session.order = newOrder;
-      res.render("user/checkout", { products: cartProducts, total });
+      res.render("user/checkout", { products: cartProducts, total:subTotal,shippingCostOutside,shippingCostKerala });
     } catch (err) {
       res.render("error", { message: err });
     }
   },
-  postCheckout: async (req, res) => {
-    try {
-      const data = req.body;
-      const cart = await req.session.cart;
-      const productIds = cart.map(
-        (item) => new mongoose.Types.ObjectId(item.productId)
-      );
-      const products = await productModel.find({ _id: { $in: productIds } });
-      const cartProducts = products.map((product) => {
-        const cartItem = cart.find((item) => {
-          return item.productId.toString() === product._id.toString();
-        });
-        return {
-          ...product.toObject(),
-          quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
-          subTotal: product.price * parseInt(cartItem.quantity, 10),
-        };
-      });
-      let total = 0;
-      cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
-      let totalWeight = 0;
-      cartProducts.forEach((elem) => (totalWeight += elem.weight * elem.quantity));
-      const orderData = {
-        ...data,
-        lineItems: cartProducts,
-        total,
-      };
-      const newOrder = new orderModel(orderData);
-      await newOrder.save();
-      const order = newOrder;
-      const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+  // postCheckout: async (req, res) => {
+  //   try {
+  //     const data = req.body;
+  //     const cart = await req.session.cart;
+  //     const productIds = cart.map(
+  //       (item) => new mongoose.Types.ObjectId(item.productId)
+  //     );
+  //     const products = await productModel.find({ _id: { $in: productIds } });
+  //     const cartProducts = products.map((product) => {
+  //       const cartItem = cart.find((item) => {
+  //         return item.productId.toString() === product._id.toString();
+  //       });
+  //       return {
+  //         ...product.toObject(),
+  //         quantity: cartItem ? parseInt(cartItem.quantity, 10) : 0,
+  //         subTotal: product.price * parseInt(cartItem.quantity, 10),
+  //       };
+  //     });
+  //     let total = 0;
+  //     cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+  //     let totalWeight = 0;
+  //     cartProducts.forEach((elem) => (totalWeight += elem.weight * elem.quantity));
+  //     console.log('total: ',totalWeight)
+  //     const orderData = {
+  //       ...data,
+  //       lineItems: cartProducts,
+  //       totalWeight,
+  //       total,
+  //     };
+  //     const newOrder = new orderModel(orderData);
+  //     await newOrder.save();
+  //     const order = newOrder;
+  //     const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
 
-      (order.date = indianTime.format("DD-MM-YYYY")),
-        (order.time = indianTime.format("hh:mm:ss A")),
-        sendTelegramAlert(newOrder).then(() => {
-          res.redirect("/order-success");
-        });
-    } catch (err) {
-      res.render("error", { message: err });
-    }
-  },
+  //     (order.date = indianTime.format("DD-MM-YYYY")),
+  //       (order.time = indianTime.format("hh:mm:ss A")),
+  //       sendTelegramAlert(newOrder).then(() => {
+  //         res.redirect("/order-success");
+  //       });
+  //   } catch (err) {
+  //     res.render("error", { message: err });
+  //   }
+  // },
   getOrderSuccess: async (req, res) => {
     try {
       res.render("user/order-success");
@@ -556,20 +583,24 @@ module.exports = {
   },
   checkOutPayment: async (req, res) => {
     const order = req.session.order;
+    const state = 'KERALA'
     const address = req.body;
     const returnUrl = process.env.DEV?'http://localhost:3000/handleJuspayResponse':'https://neoindia.in/handleJuspayResponse';
     try {
       let orderMain = await orderModel.findById(order._id);
-
-      // Update the properties of orderMain with those from address
+      let total = 0
+      if(address?.state.toUpperCase()===state){
+        total = order?.subTotal + order?.shippingCostKerala
+      }else{
+        total = order?.subTotal + order?.shippingCostOutside
+      }
       Object.assign(orderMain, address);
-
-      // Save the updated orderMain document
+      orderMain.total = total;
       await orderMain.save();
       const sessionResponse = await juspay.orderSession.create({
         order_id: "order_" + order.orderId,
         // amount: 1,
-        amount: order.total,
+        amount: total,
         payment_page_client_id: "hdfcmaster", // [required] shared with you, in config.json
         customer_id: "hdfc-testing-customer-one", // [optional] your customer id here
         action: "paymentPage", // [optional] default is paymentPage

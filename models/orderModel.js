@@ -11,6 +11,8 @@ const orderSchema = new mongoose.Schema({
   phone: String,
   lineItems: Array,
   totalWeight:Number,
+  shippingCostKerala:Number,
+  shippingCostOutside:Number,
   orderId: {
     type: String,
     unique: true
@@ -19,6 +21,7 @@ const orderSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  subTotal:Number,
   total: Number,
   paymentStatus: String
 }, { timestamps: true });
