@@ -565,7 +565,8 @@ module.exports = {
       // Save the updated orderMain document
       await orderMain.save();
       const sessionResponse = await juspay.orderSession.create({
-        order_id: "order_" + order._id,
+        order_id: "order_" + order.orderId,
+        // amount: 2,
         amount: order.total,
         payment_page_client_id: "hdfcmaster", // [required] shared with you, in config.json
         customer_id: "hdfc-testing-customer-one", // [optional] your customer id here
@@ -586,8 +587,9 @@ module.exports = {
     if(req.body.status_id=='10'){
       return res.redirect("/order-failed");
     }
+    console.log(req.body)
     const orderId = req.body.order_id || req.body.orderId;
-    const order = await orderModel.findById(orderId.split("order_")[1]);
+    const order = await orderModel.findOne({orderId:orderId.split("order_")[1]});
     if (orderId == undefined) {
       return res.json(makeError("order_id not present or cannot be empty"));
     }
@@ -658,5 +660,6 @@ function makeError(message) {
 function makeJuspayResponse(successRspFromJuspay) {
   if (successRspFromJuspay == undefined) return successRspFromJuspay;
   if (successRspFromJuspay.http != undefined) delete successRspFromJuspay.http;
+  console.log(successRspFromJuspay)
   return successRspFromJuspay;
 }
