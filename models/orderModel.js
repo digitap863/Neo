@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
   email: String,
   phone: String,
   lineItems: Array,
+  totalWeight:Number,
   orderId: {
     type: String,
     unique: true

@@ -169,7 +169,7 @@ module.exports = {
   getOrders: async (req, res) => {
     try {
       const orders = await orderModel
-        .find({ done: { $ne: true } })
+        .find({ done: { $ne: true },paymentStatus:'Success' })
         .sort({ createdAt: -1 })
         .lean();
       const updatedOrders = orders.map((order) => {

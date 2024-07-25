@@ -426,6 +426,8 @@ module.exports = {
       });
       let total = 0;
       cartProducts.forEach((elem) => (total += elem.price * elem.quantity));
+      let totalWeight = 0;
+      cartProducts.forEach((elem) => (totalWeight += elem.weight * elem.quantity));
       const orderData = {
         ...data,
         lineItems: cartProducts,
