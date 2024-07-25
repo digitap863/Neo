@@ -4,10 +4,10 @@ const { default: axios } = require('axios');
 var router = express.Router();
 
 /* GET home page. */
-// router.get('/',(req,res)=>{
-//   res.render('user/maintainance',{login:true})
-// });
-router.get('/',getHome);
+router.get('/',(req,res)=>{
+  res.render('user/maintainance',{login:true})
+});
+// router.get('/',getHome);
 router.get('/about',getAbout)
 router.get('/shop',getShop)
 router.get('/blogs',getBlog)

@@ -568,8 +568,8 @@ module.exports = {
       await orderMain.save();
       const sessionResponse = await juspay.orderSession.create({
         order_id: "order_" + order.orderId,
-        // amount: 2,
-        amount: order.total,
+        amount: 1,
+        // amount: order.total,
         payment_page_client_id: "hdfcmaster", // [required] shared with you, in config.json
         customer_id: "hdfc-testing-customer-one", // [optional] your customer id here
         action: "paymentPage", // [optional] default is paymentPage
