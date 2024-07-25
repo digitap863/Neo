@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema(
     category: String,
     shortDesc:String,
     description:String,
+    weight:Number,
     images: [ String ],
     stock:{
       type:Number,

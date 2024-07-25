@@ -146,7 +146,7 @@ module.exports = {
   },
   editProduct: async (req, res) => {
     const productId = req.params.id;
-    const { name, category, brand, description, price,shortDesc,stock } = req.body;
+    const { name, category, brand, description, price,shortDesc,stock,weight } = req.body;
     try {
       const product = await productModel.findById(productId);
       if (req.files.length > 0) {
@@ -159,6 +159,7 @@ module.exports = {
       product.description = description;
       product.price = price;
       product.stock = stock;
+      product.weight = weight
       await product.save();
       res.redirect("/admin/products");
     } catch (err) {
