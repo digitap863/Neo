@@ -1,0 +1,117 @@
+<main>
+
+  <!-- ======slider-area-start=========================================== -->
+  <div class="slider-area over-hidden">
+    <div
+      class="page-height d-flex align-items-center justify-content-center position-relative"
+      data-background="images/slider/page-bg.jpg"
+    >
+      <div class="slider-shape position-absolute z-index1">
+        <span class="slider-bg-round d-block"></span>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div
+            class="page-title b-l pt-100 text-center position-relative z-index1"
+          >
+            <h2 class="text-capitalize font600 mb-10">Blog</h2>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb justify-content-center bg-transparent">
+                <li class="breadcrumb-item"><a
+                    class="primary-color"
+                    href="#"
+                  >Home</a></li>
+                <li
+                  class="breadcrumb-item active text-capitalize"
+                  aria-current="page"
+                >Blogs</li>
+              </ol>
+            </nav>
+          </div><!-- /page title -->
+        </div><!-- /col -->
+      </div>
+    </div><!-- /single-slider -->
+  </div>
+  <!-- slider-area-end  -->
+
+  <!-- ====== right-sidebar-area-start================================ -->
+  <div class="blog-siderbar-area pt-115">
+    <div class="right-sidebar-area">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-9 col-lg-9 col-md-12 col-sm- col-">
+            <div class="blog-rs-post single-blog mt-2 pr-40">
+              <div class="row">
+                {{#each blogs}}
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="blog-sidebar-img mb-50">
+                    <div class="blog-img">
+                      <a href="#" class="d-block">
+                          {{#each this.images}}
+                                {{#if @first}}         
+                                     <img
+                                       class="width100 height100"
+                                       src="/uploads/{{this}}"
+                                       alt=""
+                                     />
+                                {{/if}}
+                              {{/each}}
+                      </a>
+                    </div><!-- /blog-img -->
+                    <div class="single-blog-content bg-white pt-25 pr-20">
+                      <ul class="single-blog-info d-sm-flex mb-15">
+                        <li class="date pr-25 mt-10">
+                          <a
+                            href="#"
+                            class="text-uppercase gray-color2 hvr font500"
+                          >
+                            <span class="pr-1 theme-color"><i
+                                class="fas fa-calendar-alt"
+                              ></i>
+                            </span>
+                            {{this.date}}
+                          </a>
+                        </li>
+                        <li class="comment pr-25 mt-10">
+                          <a
+                            href="#"
+                            class="text-uppercase gray-color2 hvr font500"
+                          >
+                            <span class="pr-1 theme-color"><i
+                                class="fas fa-user"
+                              ></i></span>
+                            <span>Author</span>
+                          </a>
+                        </li>
+                        <li class="comment mt-10">
+                          <a
+                            href="#"
+                            class="text-uppercase gray-color2 hvr font500"
+                          >
+                         
+                            <span>{{this.time}}</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <h4 class="font500 blog-title-1"><a
+                          class="pb-2 d-block"
+                          href=""
+                        >{{this.title}}</a></h4>
+                      <p class="pb-1 gray-color2">
+                     {{this.content}}
+                      </p>
+                    
+                    </div><!-- /single-blog-content -->
+                  </div>
+                </div><!-- /col -->
+                {{/each}}
+              </div><!-- /row -->
+            </div><!-- blog-rs-left -->
+          </div><!-- /col -->
+        </div><!-- /row -->
+      </div><!-- /container -->
+    </div>
+  </div><!-- /blog-sidebar-area -->
+  <!-- right-sidebar-area-end -->
+
+</main>
