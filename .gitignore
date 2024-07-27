@@ -4,4 +4,4 @@ admin-template
 node_modules/
 .env
 sessions/
-logs/
+logs/juspay-sdk.log
