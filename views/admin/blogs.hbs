@@ -88,7 +88,7 @@
             formData.append('image', file);
 
             try {
-                const response = await fetch('/upload-image', {
+                const response = await fetch('/admin/upload-image', {
                     method: 'POST',
                     body: formData
                 });
