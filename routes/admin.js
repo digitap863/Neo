@@ -37,4 +37,12 @@ router.route('/add-blog').get(verifyAdminLoggedOut,getAddBlog).post(verifyAdminL
 router.route('/add-branch').get(verifyAdminLoggedOut,getAddBranch).post(verifyAdminLoggedOut,addBranch)
 router.delete('/delete-branch/:id',verifyAdminLoggedOut,deleteBranch)
 router.delete('/delete-blog/:id',verifyAdminLoggedOut,deleteBlog)
+
+router.post('/upload-image', upload.single('image'), (req, res) => {
+    if (req.file) {
+        res.json({ imageUrl: `/uploads/${req.file.filename}` });
+    } else {
+        res.status(400).json({ error: 'No file uploaded' });
+    }
+});
 module.exports = router;

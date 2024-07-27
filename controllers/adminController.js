@@ -6,6 +6,7 @@ const orderModel = require("../models/orderModel");
 const productModel = require("../models/productModel");
 const bannerModel = require("../models/bannerModel");
 const blogModel = require("../models/blogModel");
+const QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter;
 const branchModel = require("../models/branchesModel");
 const youtubeModel = require("../models/youtubeModel");
 const admin = {
@@ -259,12 +260,16 @@ module.exports = {
   },
   addBlog: async(req, res) => {
     try{
+      console.log(req.body)
       const {title,content} = req.body
+      const delta = JSON.parse(content)
+      const converter = new QuillDeltaToHtmlConverter(delta.ops, {});
+      const html = converter.convert();
       const images = req.files.map((elem) => elem.filename);
       console.log(images)
       const blogData = {
         title,
-        content,
+        content:html,
         images
       }
       const newBlog = new blogModel(blogData)
