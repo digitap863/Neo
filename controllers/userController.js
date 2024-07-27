@@ -101,17 +101,26 @@ module.exports = {
   },
   getBlog: async (req, res) => {
     try {
-      const blogs = await blogModel.find({}).lean();
-      const updatesBlogs = blogs.map((order) => {
-        const indianTime = moment(order.createdAt).tz("Asia/Kolkata");
+      const allBlogs = await blogModel.find({}).sort({ createdAt: 1 }).lean();
+      const firstBlog = allBlogs.length > 0 ? allBlogs[0] : null;
+      const restOfBlogs = allBlogs.slice(1).sort((a, b) => b.createdAt - a.createdAt);
+  
+      const processBlogs = (blogs) => blogs.map((blog) => {
+        const indianTime = moment(blog.createdAt).tz("Asia/Kolkata");
         return {
-          ...order,
+          ...blog,
           date: indianTime.format("DD-MM-YYYY"),
           time: indianTime.format("hh:mm:ss A"),
         };
       });
-      console.log(updatesBlogs);
-      res.render("user/blogs", { blogs: updatesBlogs });
+  
+      const processedFirstBlog = firstBlog ? processBlogs([firstBlog])[0] : null;
+      const processedBlogs = processBlogs(restOfBlogs);
+  
+      res.render("user/blogs", { 
+        firstBlog: processedFirstBlog, 
+        blogs: processedBlogs 
+      });
     } catch (err) {
       res.render("error", { message: err });
     }

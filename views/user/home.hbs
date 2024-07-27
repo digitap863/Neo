@@ -134,7 +134,7 @@
       <ul class="product-items-active h2-gray-border10 pt-20 pb-20">
         {{#each categories}}
           <li class="single-product-items text-center">
-            <a href="/product/{{this._id}}">
+            <a href="/category/{{this._id}}">
               <img
                 class="d-inline-block pt-10 category-home-swiper"
                 src="/uploads/{{this.image}}"
@@ -148,7 +148,7 @@
         {{/each}}
         {{#each categories}}
           <li class="single-product-items text-center">
-            <a href="/product/{{this._id}}">
+            <a href="/category/{{this._id}}">
               <img
                 class="d-inline-block pt-10 category-home-swiper"
                 src="/uploads/{{this.image}}"
@@ -156,7 +156,7 @@
               />
             </a>
             <h5 class="mt-15"><a
-                href="/product/{{this._id}}"
+                href="/category/{{this._id}}"
               >{{this.category}}</a></h5>
           </li>
         {{/each}}
@@ -348,74 +348,7 @@
   </div> --}}
   <!-- subscribe-area-end  -->
 
-  <!-- ====== blog-area-start=============================================== -->
-  <div class="blog-area mt-75 pb-50">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="section-title text-center">
-            <h3>Latest News & Blog</h3>
-          </div><!-- /section-title -->
-        </div><!-- /col -->
-      </div><!-- /row -->
-      <div class="row news-post-active mt-50">
-       {{#each blogs}}
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-          <div class="single-blog mb-30 wow slideInUp">
-            <div class="blog-img over-hidden transition-3">
-              <a href="blog-details.html">
-                {{!-- <img
-                  class="img-zoom width100 height100"
-                  src="/neo/{{this.img}}"
-                  alt=""
-                /> --}}
-                {{#each this.images}}
-        {{#if @first}}
-            <img  class="img-zoom width100 height100" src="/uploads/{{this}}" alt="">
-        {{/if}}
-    {{/each}}
-    </a>
-            </div>
-            <div class="single-blog-content bg-white pt-25">
-              <ul class="single-blog-info d-flex mb-10">
-                <li class="date pr-25">
-                  <a href="#" class="text-uppercase gray-color2">
-                    <span class="pr-1"><i
-                        class="fal fa-calendar-alt"
-                      ></i></span>
-                    <span> 25</span>
-                    <span> dec</span>
-                    <span> 2021</span>
-                  </a>
-                </li>
-                <li class="comment">
-                  <a href="#" class="text-uppercase gray-color2 hvr">
-                    <span class="pr-1"><i class="fal fa-comments"></i></span>
-                    <span>Comment(05)</span>
-                  </a>
-                </li>
-              </ul>
-              <h5><a class="pb-2 d-block" href="blog-details.html">{{this.title}}</a></h5>
-              <p class="pb-1">{{this.content}}</p>
-              <ul class="blogger d-flex align-items-center">
-                <li>
-                  <img class="blog-author" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" />
-                </li>
-                <li>
-                  <span class="primary-color"><span
-                      class="gray-color2"
-                    >By</span>
-                    Author</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /col -->
-       {{/each}}
-      </div><!-- /row -->
-    </div><!-- /container -->
-  </div>
-  <!-- blog-area-end -->
+
 
   <!-- ====== brand-logo-area-start ========================================= -->
   {{!-- <div class="brand-logo-area bg-white over-hidden">

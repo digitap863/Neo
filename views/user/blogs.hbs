@@ -37,11 +37,14 @@
   <!-- ====== right-sidebar-area-start================================ -->
   <div class="blog-siderbar-area pt-115">
     <div class="right-sidebar-area">
-      <div class="container">
+      <div class="mod-container">
         <div class="row justify-content-center">
-          <div class="col-xl-9 col-lg-9 col-md-12 col-sm- col-">
+          <div class="col-xl-10 col-lg-10 col-md-12 col-sm- col-">
             <div class="blog-rs-post single-blog mt-2 pr-40">
               <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              {{{firstBlog.content}}}
+                </div>
                 {{#each blogs}}
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   {{{this.content}}}
@@ -57,3 +60,14 @@
   <!-- right-sidebar-area-end -->
 
 </main>
+
+<style>
+  .mod-container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+</style>
